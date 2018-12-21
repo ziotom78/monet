@@ -90,7 +90,7 @@ Here is an example:
 
 ```c++
 Color color1 = black;
-Color color2 = Color{0.5, 1.0, 0.5};
+Color color2 = rgb(0.5, 1.0, 0.5);
 Color color3 = hsl(0.3, 0.5, 0.75);
 ```
 

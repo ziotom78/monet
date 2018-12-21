@@ -12,7 +12,7 @@
 
 namespace monet {
 
-const char *version = "0.0.3";
+const char *version = "0.0.4";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,6 +40,9 @@ struct Color {
     return std::string(buf);
   }
 };
+
+// All the three values r, g, and b must be in the range [0, 1]
+inline Color rgb(double r, double g, double b) { return Color{r, g, b}; }
 
 // All the three values h, s, and l must be in the range [0, 1]
 inline Color hsl(double h, double s, double l) {
