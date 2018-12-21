@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Monet 0.0.2 (https://github.com/ziotom78/monet)-->
+<!-- Created with Monet 0.0.5 (https://github.com/ziotom78/monet)-->
 
 <svg
     width="400mm"
@@ -21,21 +21,24 @@
     x="10" y="20"
     text-anchor="start"
     dominant-baseline="text-bottom"
-    font-family="helvetica" font-size="10" fill="#000000">
+    font-family="helvetica" font-size="10"
+    fill="#000000">
 Control point #1
   </text>
   <text
     x="250" y="40"
     text-anchor="middle"
     dominant-baseline="text-bottom"
-    font-family="helvetica" font-size="10" fill="#000000">
+    font-family="helvetica" font-size="10"
+    fill="#000000">
 Control point #2
   </text>
   <text
     x="310" y="90"
     text-anchor="start"
     dominant-baseline="central"
-    font-family="helvetica" font-size="10" fill="#000000">
+    font-family="helvetica" font-size="10"
+    fill="#000000">
 End point
   </text>
 </svg>

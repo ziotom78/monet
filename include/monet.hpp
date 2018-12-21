@@ -12,7 +12,7 @@
 
 namespace monet {
 
-const char *version = "0.0.4";
+const char *version = "0.0.5";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -20,6 +20,15 @@ struct Point {
   double x, y;
 
   Point(double ax, double ay) : x(ax), y(ay) {}
+  inline void operator+=(Point p) {
+    x += p.x;
+    y += p.y;
+  }
+
+  inline void operator-=(Point p) {
+    x -= p.x;
+    y -= p.y;
+  }
 };
 
 inline Point operator+(Point a, Point b) { return Point(a.x + b.x, a.y + b.y); }
@@ -105,6 +114,7 @@ private:
   double strokewidth;
   FontFamily fontfamily;
   double fontsize;
+  double transparency;
 
 protected:
   virtual void canvas2devxy(double inx, double iny, double *outx,
@@ -131,7 +141,7 @@ protected:
 public:
   BaseCanvas()
       : strokecolor(black), fillcolor(white), strokewidth(1.0),
-        fontfamily(FontFamily::SansSerif), fontsize(12.0) {}
+        fontfamily(FontFamily::SansSerif), fontsize(12.0), transparency(0.0) {}
   void setstrokecolor(Color col) { strokecolor = col; }
   void setfillcolor(Color col) { fillcolor = col; }
 
@@ -149,6 +159,9 @@ public:
 
   virtual double getwidth() const = 0;
   virtual double getheight() const = 0;
+
+  void settransparency(double tr) { transparency = tr; }
+  double gettransparency() const { return transparency; }
 
   void moveto(Point p) {
     Point devpt = canvas2dev(p);
@@ -343,7 +356,12 @@ protected:
 
     *stream << "<line x1=\"" << x1 << "\" y1=\"" << y1 << "\" x2=\"" << x2
             << "\" y2=\"" << y2 << "\" stroke-width=\"" << getstrokewidth()
-            << "\" stroke=\"" << getstrokecolor().toHTML() << "\"/>\n";
+            << "\" stroke=\"" << getstrokecolor().toHTML() << '\"';
+
+    if (gettransparency() > 0)
+      *stream << " opacity=\"" << 1 - gettransparency() << '\"';
+
+    *stream << "/>\n";
   }
 
   void circlexy(double x, double y, double radius,
@@ -357,22 +375,26 @@ protected:
     switch (act) {
     case Action::Stroke:
       buf << "\" stroke=\"" << getstrokecolor().toHTML() << "\" stroke-width=\""
-          << getstrokewidth() << "\"/>";
+          << getstrokewidth() << '\"';
       break;
     case Action::Fill:
-      buf << "\" fill=\"" << getfillcolor().toHTML() << "\" stroke=\"none\"/>";
+      buf << "\" fill=\"" << getfillcolor().toHTML() << "\" stroke=\"none\"";
       break;
     case Action::FillAndStroke:
       buf << "\" fill=\"" << getfillcolor().toHTML() << "\" stroke=\""
           << getstrokecolor().toHTML() << "\" stroke-width=\""
-          << getstrokewidth() << "\"/>";
+          << getstrokewidth() << '\"';
       break;
     default:
       abort();
     }
 
     *stream << buf.rdbuf();
-    *stream << '\n';
+
+    if (gettransparency() > 0)
+      *stream << " opacity=\"" << 1 - gettransparency() << '\"';
+
+    *stream << "/>\n";
   }
 
   void rectanglexy(double x1, double y1, double x2, double y2,
@@ -392,22 +414,26 @@ protected:
     switch (act) {
     case Action::Stroke:
       buf << "stroke=\"" << getstrokecolor().toHTML() << "\" stroke-width=\""
-          << getstrokewidth() << "\" fill=\"none\"/>";
+          << getstrokewidth() << "\" fill=\"none\"";
       break;
     case Action::Fill:
-      buf << "stroke=\"none\" fill=\"" << getfillcolor().toHTML() << "\"/>";
+      buf << "stroke=\"none\" fill=\"" << getfillcolor().toHTML() << '\"';
       break;
     case Action::FillAndStroke:
       buf << "stroke=\"" << getstrokecolor().toHTML() << "\" stroke-width=\""
           << getstrokewidth() << "\" fill=\"" << getfillcolor().toHTML()
-          << "\"/>";
+          << '\"';
       break;
     default:
       abort();
     }
 
     *stream << buf.rdbuf();
-    *stream << '\n';
+
+    if (gettransparency() > 0)
+      *stream << " opacity=\"" << 1 - gettransparency() << '\"';
+
+    *stream << "/>\n";
   }
 
   void textxy(double x, double y, const char *text, HorizontalAlignment halign,
@@ -454,8 +480,12 @@ protected:
             << spaces << halign_def << "\n"
             << spaces << valign_def << "\n"
             << spaces << "font-family=\"" << fontfamilyname()
-            << "\" font-size=\"" << getfontsize() << "\" fill=\""
-            << getfillcolor().toHTML() << "\">\n"
+            << "\" font-size=\"" << getfontsize() << "\"\n";
+
+    if (gettransparency() > 0)
+      *stream << spaces << "opacity=\"" << 1 - gettransparency() << "\"\n";
+
+    *stream << spaces << "fill=\"" << getfillcolor().toHTML() << "\">\n"
             << text << "\n";
 
     indent();

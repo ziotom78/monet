@@ -1,6 +1,4 @@
-# Tutorial
-
-## The first image
+# The first image
 
 The first program we are going to write will use Monet to create a SVG
 image containing a rectangle and a diagonal line.
@@ -24,7 +22,7 @@ The result is the following:
 
 ![tut01 image](./tut01.svg)
 
-## Coordinate system
+# Coordinate system
 
 Monet can create rectangular images, where each point in the image is
 located using a Cartesian coordinate system. The bottom-left corner of
@@ -77,7 +75,7 @@ the result would have been uglier:
 ![tut02 image with no shift](./tut02-bad.svg)
 
 
-## Fun with colors
+# Fun with colors
 
 There are three ways to specify colors in Monet:
 
@@ -143,7 +141,7 @@ blue square in the `L: 33%` row is significantly darker than the green
 square in the same row), but in the image below all the gray
 rectangles on the same row have the same shade.
 
-## Paths
+# Paths
 
 Apart from circles and text, Monet is able to draw more complex
 shapes. *Paths* are an important concept: they are built using
@@ -202,3 +200,16 @@ A more versatile curve is the *cubic curve*, which requires to specify
 {{snippet_from_file("tut06.cpp", "c++")}}
 
 ![tut06 image](./tut06.svg)
+
+# Transparencies
+
+It is possible to make graphical elements partially transparent, using
+the `settransparency` function.
+
+{{code_from_file("tut07.cpp", "c++")}}
+
+The code above produces a set of rectangles, starting from a fully
+opaque red color to a 80% transparent violet hue. Note that the border
+of the rectangles has *no* transparency.
+
+![tut07 image](./tut07.svg)

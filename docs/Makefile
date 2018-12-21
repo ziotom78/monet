@@ -13,7 +13,8 @@ EXAMPLE_FILES = \
 	tut04-fillandstroke.svg \
 	tut04-closepath.svg \
 	tut05.svg \
-	tut06.svg
+	tut06.svg \
+	tut07.svg
 
 .phony: all
 
