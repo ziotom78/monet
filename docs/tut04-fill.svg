@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Monet 0.0.2 (https://github.com/ziotom78/monet)-->
+
+<svg
+    width="500mm"
+    height="200mm"
+    viewBox="0 0 500 200"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M 100,150 250,60 350,25 350,150"
+    fill="#b2b2b2" stroke="none"/>
+  <circle cx="100" cy="150" r="5" fill="#ff0000" stroke="#000000" stroke-width="1"/>
+  <text
+    x="112" y="150"
+    text-anchor="start"
+    dominant-baseline="central"
+    font-family="helvetica" font-size="12" fill="#000000">
+#1
+  </text>
+  <circle cx="250" cy="60" r="5" fill="#ff0000" stroke="#000000" stroke-width="1"/>
+  <text
+    x="262" y="60"
+    text-anchor="start"
+    dominant-baseline="central"
+    font-family="helvetica" font-size="12" fill="#000000">
+#2
+  </text>
+  <circle cx="350" cy="25" r="5" fill="#ff0000" stroke="#000000" stroke-width="1"/>
+  <text
+    x="362" y="25"
+    text-anchor="start"
+    dominant-baseline="central"
+    font-family="helvetica" font-size="12" fill="#000000">
+#3
+  </text>
+  <circle cx="350" cy="150" r="5" fill="#ff0000" stroke="#000000" stroke-width="1"/>
+  <text
+    x="362" y="150"
+    text-anchor="start"
+    dominant-baseline="central"
+    font-family="helvetica" font-size="12" fill="#000000">
+#4
+  </text>
+</svg>
