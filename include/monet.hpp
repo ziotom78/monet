@@ -11,7 +11,7 @@
 
 namespace monet {
 
-const char *version = "0.0.1";
+const char *version = "0.0.2";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -103,6 +103,8 @@ private:
   double fontsize;
 
 protected:
+  virtual void canvas2devxy(double inx, double iny, double *outx,
+                            double *outy) = 0;
   virtual void movetoxy(double x, double y) = 0;
   virtual void linetoxy(double x, double y) = 0;
   virtual void linexy(double x1, double y1, double x2, double y2) = 0;
@@ -111,6 +113,12 @@ protected:
                            Action act) = 0;
   virtual void textxy(double x, double y, const char *text,
                       HorizontalAlignment halign, VerticalAlignment valign) = 0;
+
+  Point canvas2dev(Point p) {
+    double devx, devy;
+    canvas2devxy(p.x, p.y, &devx, &devy);
+    return Point{devx, devy};
+  }
 
 public:
   BaseCanvas()
@@ -131,19 +139,81 @@ public:
   virtual FontFamily getfontfamily() const { return fontfamily; }
   virtual double getfontsize() const { return fontsize; }
 
-  void moveto(Point p) { movetoxy(p.x, p.y); }
-  void lineto(Point p) { linetoxy(p.x, p.y); }
-  void line(Point p1, Point p2) { linexy(p1.x, p1.y, p2.x, p2.y); }
+  void moveto(Point p) {
+    Point devpt = canvas2dev(p);
+    movetoxy(devpt.x, devpt.y);
+  }
+
+  void lineto(Point p) {
+    Point devpt = canvas2dev(p);
+    linetoxy(devpt.x, devpt.y);
+  }
+
+  void line(Point p1, Point p2) {
+    Point devpt1 = canvas2dev(p1);
+    Point devpt2 = canvas2dev(p2);
+    linexy(devpt1.x, devpt1.y, devpt2.x, devpt2.y);
+  }
+
   void circle(Point p, double radius, Action act = Action::Stroke) {
-    circlexy(p.x, p.y, radius, act);
+    Point devpt = canvas2dev(p);
+    Point devptborder = canvas2dev(p + Point(radius, 0));
+    // Note: this assumes that the circle is still a circle when
+    // converted from canvas to device coordinates!
+    circlexy(devpt.x, devpt.y, std::fabs(devptborder.x - devpt.x), act);
   }
+
   void rectangle(Point p1, Point p2, Action act = Action::Stroke) {
-    rectanglexy(p1.x, p1.y, p2.x, p2.y, act);
+    Point devpt1 = canvas2dev(p1);
+    Point devpt2 = canvas2dev(p2);
+    rectanglexy(devpt1.x, devpt1.y, devpt2.x, devpt2.y, act);
   }
+
   void text(Point p, const std::string &str,
             HorizontalAlignment halign = HorizontalAlignment::Right,
             VerticalAlignment valign = VerticalAlignment::Top) {
-    textxy(p.x, p.y, str.c_str(), halign, valign);
+    Point devpt = canvas2dev(p);
+    HorizontalAlignment dev_halign = halign;
+    VerticalAlignment dev_valign = valign;
+
+    // Decide where is "right" and "left"
+    Point rightpt = canvas2dev(p + Point(1.0, 0.0));
+    if (rightpt.x < devpt.x) {
+      // We must flip the horizontal alignment, as this device flips
+      // "right" and "left" in the conversion from canvas to device
+      // coordinates.
+      switch (halign) {
+      case HorizontalAlignment::Right:
+        dev_halign = HorizontalAlignment::Left;
+        break;
+      case HorizontalAlignment::Left:
+        dev_halign = HorizontalAlignment::Right;
+        break;
+      default:
+        // Useless, but it prevents a warning from the compiler
+        dev_halign = halign;
+      }
+    }
+
+    // Decide where is "up" and "down"
+    Point upperpt = canvas2dev(p + Point(0.0, 1.0));
+    if (upperpt.y < devpt.y) {
+      // We must flip the vertical alignment, as this device flips
+      // "top" and "bottom" in the conversion from canvas to device
+      // coordinates.
+      switch (valign) {
+      case VerticalAlignment::Top:
+        dev_valign = VerticalAlignment::Bottom;
+        break;
+      case VerticalAlignment::Bottom:
+        dev_valign = VerticalAlignment::Top;
+        break;
+      default:
+        // Useless, but it prevents a warning from the compiler
+        dev_valign = valign;
+      }
+    }
+    textxy(devpt.x, devpt.y, str.c_str(), dev_halign, dev_valign);
   }
 
   virtual void closepath() = 0;
@@ -194,6 +264,15 @@ private:
   }
 
 protected:
+  void canvas2devxy(double inx, double iny, double *outx,
+                    double *outy) override {
+    assert(outx != NULL);
+    assert(outy != NULL);
+
+    *outx = inx;
+    *outy = height - iny;
+  }
+
   void movetoxy(double x, double y) override {
     if (!pathspec.empty())
       pathspec += ' ';
