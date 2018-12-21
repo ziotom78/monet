@@ -22,6 +22,58 @@ The result is the following:
 
 ![tut01 image](./tut01.svg)
 
+Let's analyze the code line by line. The first line instantiates a
+*canvas*, i.e., a 2D surface that accepts graphical commands:
+
+```c++
+SVGCanvas canvas("tut01.svg", 500, 300);
+```
+
+The constructor we are using, `SVGCanvas` saves the plotting commands
+in a SVG file. SVG files can be viewed using any Internet browser
+(e.g., Firefox, Chrome, Safari) and edited using vector graphics
+programs like Inkscape, Adobe Illustrator, and Corel Draw!.
+
+The second line sets the *fill color* for any filling operation that
+will follow. We are using one of the predefined colors in Monet,
+`yellow`:
+
+```c++
+canvas.setfillcolor(yellow);
+```
+
+The next line asks Monet to draw a rectangle on the canvas:
+
+```c++
+canvas.rectangle(Point(0, 0), Point(500, 300), Action::Fill);
+```
+
+The rectangle is specified using two opposite corners along one of the
+diagonals. The order is irrelevant, but for convention we usually
+specify the bottom-left corner first. The third argument specifies how
+the rectangle should be drawn:
+
+1. `Action::Fill` (this case) asks Monet to *fill* the rectangle with
+   the fill color we have specified;
+
+2. `Action::Stroke` draws the outline of the rectangle. In this case,
+   the *stroke color* (set using the method `canvas.setstrokecolor`,
+   see below) would be used instead of *fill color*.
+   
+3. `Action::FillAndStroke` fills the rectangle using the *fill color*
+   and then draws the outline using the *stroke color*.
+   
+Finally, the last two commands set the stroke color to black and draw
+a line:
+
+```c++
+canvas.setstrokecolor(black);
+canvas.line(Point(100, 100), Point(400, 200));
+```
+
+Once the variable `canvas` goes out of scope (i.e., the program ends),
+the file `tut01.svg` is flushed to disk and closed.
+
 # Coordinate system
 
 Monet can create rectangular images, where each point in the image is
