@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
@@ -336,9 +337,10 @@ protected:
 
     indent();
     *stream << "<rect\n"
-            << spaces << "x=\"" << x1 << "\" y=\"" << y1 << "\"\n"
-            << spaces << "width=\"" << x2 - x1 << "\" height=\"" << y2 - y1
+            << spaces << "x=\"" << std::min(x1, x2) << "\" y=\"" << std::min(y1)
             << "\"\n"
+            << spaces << "width=\"" << std::fabs(x2 - x1) << "\" height=\""
+            << std::fabs(y2 - y1) << "\"\n"
             << spaces;
 
     std::stringstream buf;
