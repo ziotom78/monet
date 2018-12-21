@@ -1,0 +1,20 @@
+site_name: Monet
+
+nav:
+  - Home: index.md
+  - Tutorial: tutorial.md
+
+theme: readthedocs
+    
+markdown_extensions:
+  - fenced_code
+
+plugins:
+  - search
+  - macros
+
+python_module: include_files_in_docs
+
+extra:
+  monet_version: 0.0.3
+  

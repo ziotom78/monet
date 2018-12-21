@@ -12,7 +12,7 @@
 
 namespace monet {
 
-const char *version = "0.0.2";
+const char *version = "0.0.3";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -108,6 +108,10 @@ protected:
                             double *outy) = 0;
   virtual void movetoxy(double x, double y) = 0;
   virtual void linetoxy(double x, double y) = 0;
+  virtual void quadratictoxy(double xdir, double ydir, double xend,
+                             double yend) = 0;
+  virtual void cubictoxy(double xc1, double yc1, double xc2, double yc2,
+                         double xend, double yend) = 0;
   virtual void linexy(double x1, double y1, double x2, double y2) = 0;
   virtual void circlexy(double x, double y, double radius, Action act) = 0;
   virtual void rectanglexy(double x1, double y1, double x2, double y2,
@@ -140,6 +144,9 @@ public:
   virtual FontFamily getfontfamily() const { return fontfamily; }
   virtual double getfontsize() const { return fontsize; }
 
+  virtual double getwidth() const = 0;
+  virtual double getheight() const = 0;
+
   void moveto(Point p) {
     Point devpt = canvas2dev(p);
     movetoxy(devpt.x, devpt.y);
@@ -148,6 +155,19 @@ public:
   void lineto(Point p) {
     Point devpt = canvas2dev(p);
     linetoxy(devpt.x, devpt.y);
+  }
+
+  void quadraticto(Point dir, Point end) {
+    Point devdir = canvas2dev(dir);
+    Point devend = canvas2dev(end);
+    quadratictoxy(devdir.x, devdir.y, devend.x, devend.y);
+  }
+
+  void cubicto(Point control1, Point control2, Point end) {
+    Point devc1 = canvas2dev(control1);
+    Point devc2 = canvas2dev(control2);
+    Point devend = canvas2dev(end);
+    cubictoxy(devc1.x, devc1.y, devc2.x, devc2.y, devend.x, devend.y);
   }
 
   void line(Point p1, Point p2) {
@@ -224,6 +244,7 @@ public:
     fillpath();
     strokepath();
   }
+  virtual void clearpath() = 0;
 
   virtual void begingroup(const std::string &name = "") = 0;
   virtual void endgroup() = 0;
@@ -279,7 +300,7 @@ protected:
       pathspec += ' ';
 
     std::stringstream buf;
-    buf << "M" << x << ',' << y;
+    buf << "M " << x << ',' << y;
     pathspec += buf.str();
   }
 
@@ -289,6 +310,27 @@ protected:
 
     std::stringstream buf;
     buf << x << ',' << y;
+    pathspec += buf.str();
+  }
+
+  void quadratictoxy(double xdir, double ydir, double xend,
+                     double yend) override {
+    if (!pathspec.empty())
+      pathspec += ' ';
+
+    std::stringstream buf;
+    buf << "Q " << xdir << ',' << ydir << ' ' << xend << ',' << yend;
+    pathspec += buf.str();
+  }
+
+  void cubictoxy(double xc1, double yc1, double xc2, double yc2, double xend,
+                 double yend) override {
+    if (!pathspec.empty())
+      pathspec += ' ';
+
+    std::stringstream buf;
+    buf << "C " << xc1 << ',' << yc1 << ' ' << xc2 << ',' << yc2 << ' ' << xend
+        << ',' << yend;
     pathspec += buf.str();
   }
 
@@ -337,8 +379,8 @@ protected:
 
     indent();
     *stream << "<rect\n"
-            << spaces << "x=\"" << std::min(x1, x2) << "\" y=\"" << std::min(y1)
-            << "\"\n"
+            << spaces << "x=\"" << std::min(x1, x2) << "\" y=\""
+            << std::min(y1, y2) << "\"\n"
             << spaces << "width=\"" << std::fabs(x2 - x1) << "\" height=\""
             << std::fabs(y2 - y1) << "\"\n"
             << spaces;
@@ -440,7 +482,7 @@ public:
             << height
             << "mm\"\n"
                "    viewBox=\"0 0 "
-            << width << " " << height
+            << width << ' ' << height
             << "\"\n"
                "    version=\"1.1\"\n"
                "    xmlns=\"http://www.w3.org/2000/svg\">\n";
@@ -497,6 +539,8 @@ public:
             << getstrokewidth() << "\"/>\n";
   }
 
+  void clearpath() override { pathspec = ""; }
+
   void begingroup(const std::string &name = "") override {
     assert(stream != nullptr);
 
@@ -526,6 +570,9 @@ public:
 
     grouplevel--;
   }
+
+  double getwidth() const override { return width; }
+  double getheight() const override { return height; }
 };
 
 }; // namespace monet
