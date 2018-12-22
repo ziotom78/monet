@@ -53,7 +53,7 @@ int main() {
 
       // Highlight the pivot of the text element by
       // drawing a small circle around it
-      canv.setfillcolor(black);
+      canv.setfillcolor(red);
       canv.circle(textpoint, 5, Action::Fill);
   }
   canv.endgroup();
