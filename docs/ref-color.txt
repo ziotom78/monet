@@ -1,0 +1,4 @@
+col1 = rgb[1, 0, 0.5]
+The HTML representation of col1 is '#ff007f'
+col2 = rgb[0.58, 0.676, 0.82]
+The HTML representation of col2 is '#93acd1'

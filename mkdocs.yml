@@ -3,11 +3,14 @@ site_name: Monet
 nav:
   - Home: index.md
   - Tutorial: tutorial.md
+  - Reference: ref.md
 
 theme: readthedocs
     
 markdown_extensions:
   - fenced_code
+  - tables
+  - toc
 
 plugins:
   - search
@@ -16,5 +19,5 @@ plugins:
 python_module: include_files_in_docs
 
 extra:
-  monet_version: 0.0.5
+  monet_version: 0.0.6
   

@@ -14,11 +14,21 @@ EXAMPLE_FILES = \
 	tut04-closepath.svg \
 	tut05.svg \
 	tut06.svg \
-	tut07.svg
+	tut07.svg \
+	ref-color.txt \
+	ref-color-table.svg \
+	ref-point.txt \
+	ref-fonts.svg
 
-.phony: all
+.phony: all clean
 
 all: $(EXAMPLE_FILES)
 
+clean:
+	rm -f $(EXAMPLE_FILES)
+
 %.svg: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< && ./a.out && rm -f ./a.out
+
+%.txt: %.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< && ./a.out > $@ && rm -f ./a.out

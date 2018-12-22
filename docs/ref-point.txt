@@ -1,0 +1,5 @@
+pt1 is (300, 400)
+pt1 is now (30, 40)
+pt1 scaled by 5 is (6, 8)
+The sum of pt1 and pt2 is (130, 240)
+The X component of pt1 + pt2 is 130
