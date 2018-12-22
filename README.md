@@ -2,7 +2,7 @@
 
 [![Documentation](https://readthedocs.org/projects/docs/badge/)](https://ziotom78-monet.readthedocs.io/en/latest/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Semver](http://img.shields.io/SemVer/0.0.6.png)](http://semver.org/spec/v2.0.0.html)
+[![Semver](http://img.shields.io/SemVer/0.0.7.png)](http://semver.org/spec/v2.0.0.html)
 
 Monet is a header-only C++11 graphics library with no 3rd-party
 dependencies to create vector graphics.

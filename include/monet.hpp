@@ -38,7 +38,7 @@
 
 namespace monet {
 
-const char *version = "0.0.6";
+const char *version = "0.0.7";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -124,6 +124,9 @@ inline Color hsl(double h, double s, double l) {
   double m = l - chroma / 2;
   return Color{scaled.r + m, scaled.g + m, scaled.b + m};
 }
+
+// The gray level must be in the range [0, 1]
+inline Color gray(double level) { return hsl(0.0, 0.0, level); }
 
 const Color black{0.0, 0.0, 0.0};
 const Color darkred{0.5, 0.0, 0.0};

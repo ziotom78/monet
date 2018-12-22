@@ -19,7 +19,7 @@ int main() {
 
   // @@@START_CODE_SNIPPET@@@
   canvas.closepath();
-  canvas.setfillcolor(Color{0.7, 0.7, 0.7});
+  canvas.setfillcolor(gray(0.7));
   canvas.fillandstrokepath();
   // @@@END_CODE_SNIPPET@@@
 

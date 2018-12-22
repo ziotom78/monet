@@ -24,8 +24,17 @@ The result is the following:
 
 ![tut01 image](./tut01.svg)
 
-Let's analyze the code line by line. The first line instantiates a
-*canvas*, i.e., a 2D surface that accepts graphical commands:
+Let's analyze the code line by line. First of all, every class and
+function in the library lives within the `monet` namespace. In this
+documentation, we always put put the following statement at the
+beginning of the code:
+
+```c++
+using namespace monet;
+```
+
+The first statement in `main` instantiates a *canvas*, i.e., a 2D
+surface that accepts graphical commands:
 
 ```c++
 SVGCanvas canvas("tut01.svg", 500, 300);
@@ -34,7 +43,8 @@ SVGCanvas canvas("tut01.svg", 500, 300);
 The constructor we are using, `SVGCanvas` saves the plotting commands
 in a SVG file. SVG files can be viewed using any Internet browser
 (e.g., Firefox, Chrome, Safari) and edited using vector graphics
-programs like Inkscape, Adobe Illustrator, and Corel Draw!.
+programs like [Inkscape](https://inkscape.org/), Adobe Illustrator,
+and Corel Draw!.
 
 The second line sets the *fill color* for any filling operation that
 will follow. We are using one of the predefined colors in Monet,
@@ -116,13 +126,14 @@ Many new concepts are used in this new program:
 2. We have used mathematical operations with the `Point` structure.
 
 The call to `canvas.text` passes `pt + Point(0, canvas.getfontsize())`
-as the coordinate where to put the text. `monet::Point` is a structure
-that can be used with a few mathematical operators. In our example, we
-used the addition (`operator+`) in order to shift the text a bit above
-the circle. The amount of vertical shift is given by the result of a
-call to `canvas.getfontsize()`, which returns the height of a
-character of text. Had we avoided the call to `canvas.getfontsize()`,
-like here:
+as the coordinate where to put the text. `Point` is a structure that
+can be used with a few mathematical operators. In our example, we used
+the addition (`operator+`) in order to shift the text a bit above the
+circle. See the [reference](./ref.md#point) for more information.
+
+The amount of vertical shift is given by the result of a call to
+`canvas.getfontsize()`, which returns the height of a character of
+text. Had we avoided this fix, like here:
 
 {{snippet_from_file("tut02-bad.cpp", "c++")}}
 
@@ -133,19 +144,21 @@ the result would have been uglier:
 
 ## Fun with colors
 
-There are three ways to specify colors in Monet:
+There are several ways to specify colors in Monet:
 
 1. Use one of the predefined constants, like `black`, `yellow`,
    `darkred`, `lightgreen`, etc.;
 2. Specify a color using its RGB (red-green-blue) components;
-3. Specify a color using its HSL (hue-saturation-lightness) components.
+3. Specify a shade of gray;
+4. Specify a color using its HSL (hue-saturation-lightness) components.
 
 Here is an example:
 
 ```c++
 Color color1 = black;
 Color color2 = rgb(0.5, 1.0, 0.5);
-Color color3 = hsl(0.3, 0.5, 0.75);
+Color color3 = gray(0.7);
+Color color4 = hsl(0.3, 0.5, 0.75);
 ```
 
 RGB and HSL use three floating-point numbers in the range [0, 1] to
@@ -153,18 +166,21 @@ specify colors. In the example above, `color2` is a color made 50% of
 red, 100% of green and 50% of blue: a light green. We will not spend
 much time about RGB colors, as they are widely used and plenty of
 explanations can be found on the web (by the way, it is the standard
-way to encode colors in HTML).
+way to encode colors in HTML). Gray shades can be specified using the
+`gray` function, wich accepts a number in the range [0, 1]
+representing the luminosity of the shade (0 is black, 1 is white).
 
-Color `color3` is specified using its hue, saturation, and luminosity
+Color `color4` is specified using its hue, saturation, and luminosity
 components. This is a somewhat more physical way of identifiying a
 color, but it is user far less than RGB, so we will spend some more
-time on it. The three numbers have the following meaning:
+time on it. The three numbers used to define `color4` have the
+following meaning:
 
-1. Its hue is at one third of the distance between red (0) and blue
+1. The hue is at one third of the distance between red (0) and blue
    (1) in the electromagnetic spectrum (it is a measure of the
    wavelength of monocromatic light);
-2. Its saturation is halfway (50%) between gray and the fully bright hue;
-3. Its luminosity is 75% between black (0%) and white (100%).
+2. The saturation is halfway (50%) between gray and the fully bright hue;
+3. The luminosity is 75% between black (0%) and white (100%).
 
 Playing with luminosity helps in making the images lighter or
 darker. Note that if luminosity is 0, the color is black regardless of
@@ -180,7 +196,8 @@ And here is the result:
 
 ![tut03 image](./tut03.svg)
 
-Note that we are using 100% saturation (colors are bright). Let's see what happens if we set the saturation to zero:
+Note that we are using 100% saturation (colors are bright). Let's see
+what happens if we set the saturation to zero:
 
 {{snippet_from_file("tut03-no-saturation.cpp", "c++")}}
 
@@ -195,7 +212,9 @@ space is not entirely physical, as there are some hues that are
 significantly darker than others at the same luminosity (e.g., the
 blue square in the `L: 33%` row is significantly darker than the green
 square in the same row), but in the image below all the gray
-rectangles on the same row have the same shade.
+rectangles on the same row have the same shade. Better color spaces
+exist (e.g., [luma](https://en.wikipedia.org/wiki/Luma_(video))), but
+Monet does not implement them at the moment.
 
 ## Paths
 
@@ -204,7 +223,7 @@ shapes. *Paths* are an important concept: they are built using
 consecutive calls to `moveto`, `lineto`, and similar functions. Each
 command builds up a path without drawing anything; in order to show
 the path, you must call either `strokepath`, `fillpath`, or
-`fillandstrokepath`. Let's a very simple example:
+`fillandstrokepath`. Consider this example:
 
 {{code_from_file("tut04.cpp", "c++")}}
 

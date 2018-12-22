@@ -21,11 +21,13 @@ functions (remember, they are not constructors):
   the range [0, 1] (yes, even the hue). The
   [tutorial](./tutorial.md#fun-with-colors) has a nice explanation of
   the meaning of each parameter.
+- `gray(l)` initializes the color with a gray shade. It is equivalent
+  to `hue(0, 0, l)`.
 
-The only method provided by `Color` is `toHTML`, which returns a
-string containing the HTML representation of the color. A `Color`
-object can be printed to a stream using the `<<` operator, as shown in
-the following example:
+The only method provided by the class `Color` is `toHTML`, which
+returns a string containing the HTML representation of the color. A
+`Color` object can be printed to a stream using the `<<` operator, as
+shown in the following example:
 
 Here is an example showing these operators:
 

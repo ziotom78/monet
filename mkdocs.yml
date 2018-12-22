@@ -19,5 +19,5 @@ plugins:
 python_module: include_files_in_docs
 
 extra:
-  monet_version: 0.0.6
+  monet_version: 0.0.7
   
