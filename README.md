@@ -5,9 +5,9 @@
 [![Semver](http://img.shields.io/SemVer/0.0.7.png)](http://semver.org/spec/v2.0.0.html)
 
 Monet is a header-only C++11 graphics library with no 3rd-party
-dependencies to create vector graphics.
-
-It is still a WIP, as the interface is going to change a lot.
+dependencies to create vector graphics. The API is not completely
+stable yet, but it should not change too much before the release of
+version 1.0.0.
 
 The library is licensed using the MIT license. See the file LICENSE.md
 for further information.
