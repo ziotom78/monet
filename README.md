@@ -9,7 +9,8 @@ dependencies to create vector graphics. The API is not completely
 stable yet, but it should not change too much before the release of
 version 1.0.0.
 
-The library is licensed using the MIT license. See the file LICENSE.md
+The library is licensed using the MIT license. See the file
+[LICENSE.md](https://github.com/ziotom78/monet/blob/master/LICENSE.md)
 for further information.
 
 ## Example
