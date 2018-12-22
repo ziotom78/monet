@@ -8,10 +8,10 @@ image containing a rectangle and a diagonal line.
 Create an empty directory somewhere with name `tut01`, and install the
 Monet header file in it with the following command:
 
-    curl https://github.com/ziotom78/monet/include/monet.hpp > monet.hpp
+    curl https://raw.githubusercontent.com/ziotom78/monet/master/include/monet.hpp > monet.hpp
 
-(You can use `wget` or any other downloader, if you want.) Now use
-your favourite editor to create the following C++ file, and name it
+(Of course, you can use `wget` or any other downloader.) Now use your
+favourite editor to create the following C++ file, and name it
 `tut01.cpp`:
 
 {{code_from_file("tut01.cpp", "c++")}}
