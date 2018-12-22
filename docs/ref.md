@@ -1,4 +1,6 @@
-# Color
+# Reference
+
+## Color
 
 A `Color` structure represents a color to be used for painting the
 canvas. It contains the following fields:
@@ -16,7 +18,9 @@ functions (remember, they are not constructors):
   in stating the color space;
 - `hsl(h, s, l)` initializes the color using the hue, saturation, and
   luminosity values. In this case too, all the parameters must be in
-  the range [0, 1] (yes, even the hue).
+  the range [0, 1] (yes, even the hue). The
+  [tutorial](./tutorial.md#fun-with-colors) has a nice explanation of
+  the meaning of each parameter.
 
 The only method provided by `Color` is `toHTML`, which returns a
 string containing the HTML representation of the color. A `Color`
@@ -32,14 +36,14 @@ And here is the output:
 {{code_from_file("ref-color.txt", "text")}}
 
 
-## Standard colors
+### Standard colors
 
 The library provides a number of predefined colors:
 
 ![color table](./ref-color-table.svg)
 
 
-# Fonts
+## Fonts
 
 Fonts are specified through the `FontFamily` enumeration:
 
@@ -51,7 +55,7 @@ Name | Examples
 
 ![font table](./ref-fonts.svg)
 
-# Point
+## Point
 
 A `Point` structure represents a 2D point on the canvas. It contains
 the following fields:
@@ -87,3 +91,39 @@ Here is an example showing these operators:
 And here is the output:
 
 {{code_from_file("ref-point.txt", "text")}}
+
+
+## Primitives
+
+In Monet's slang, a *primitive* is a graphics operation provided by
+the canvas. Monet has several primitives, provided by methods of the
+`BaseCanvas` class:
+
+Method       | Shape
+------------ | -----------------------------------------------------------
+`circle`     | A circle
+`line`       | A straight line
+`rectangle`  | A rectangle with its sides aligned with the X and Y axes
+
+## Paths
+
+The `BaseCanvas` class provides the following methods to
+create/modify/draw paths:
+
+Method              | Meaning
+------------------- | ---------------------------------------------------
+`moveto(pt)` | Move to a point without drawing anything
+`lineto(pt)` | Connect the current point to a new point using a straight line
+`quadraticto(target, end)` | As `lineto`, but the line is curved (quadratic)
+`cubicto(ctrl1, ctrl2, end)` | As `lineto`, but the line is curved (cubic)
+`closepath()` | Connect the current point with the first point in the path
+`strokepath()` | Draw the path on the canvas using the color set with `setstrokecolor`
+`fillpath()` | Close the path if needed, and then fill it with the color set with `setfillcolor`
+`fillandstrokepath()` | Combination of `fillpath` and `strokepath`
+`clearpath()` | Cancel the current path and start a new ones
+
+A presentation of the commands used to create paths is provided in the
+[tutorial](./tutorial.md#paths).
+
+Once you have finished with a path, you *must* call `clearpath` before
+drawing a new one!
