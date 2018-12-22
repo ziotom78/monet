@@ -13,3 +13,8 @@ disk.
 
 At the moment, Monet supports the production of SVG files; other
 formats, like EPS and PDF, are planned.
+
+You can proceed with the [tutorial](./tutorial.md), or you can
+directly download the library and start coding:
+
+    curl https://raw.githubusercontent.com/ziotom78/monet/master/include/monet.hpp > monet.hpp
