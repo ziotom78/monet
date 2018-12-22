@@ -10,15 +10,16 @@ int main() {
   std::vector<Point> points{Point(100, 50), Point(250, 140), Point(350, 175),
                             Point(350, 50)};
 
+  // Draw the path
   for (size_t i = 0; i < points.size(); ++i) {
     if (i == 0)
       canvas.moveto(points[i]);
     else
       canvas.lineto(points[i]);
   }
-
   canvas.strokepath();
 
+  // Draw circles and some text on the points along the path
   int pointidx = 1;
   for (const Point &point : points) {
     canvas.setfillcolor(lightred);

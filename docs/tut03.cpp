@@ -15,11 +15,15 @@ int main() {
   const int hue_nsteps = 10;
   const double square_height = height / 3;
 
+  // Use a fixed saturation for all the squares
   const double saturation = 1.0;
+
+  // Draw three rows of squares
   const std::vector<double> lightness_levels{0.33, 0.50, 0.67};
   for (size_t row_num = 0; row_num < lightness_levels.size(); ++row_num) {
     double lightness = lightness_levels[row_num];
 
+    // Inner loop: draw one row
     for (double hue_step = 0; hue_step < hue_nsteps; ++hue_step) {
       double hue = (hue_step + 0.5) / hue_nsteps;
       canvas.setfillcolor(hsl(hue, saturation, lightness));
