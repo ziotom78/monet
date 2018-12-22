@@ -62,7 +62,7 @@ int main() {
 
 The program produces the following output:
 
-![](sample.svg)
+![](sample.svg | width=300)
 
 ## Documentation
 
