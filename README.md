@@ -22,7 +22,7 @@ using namespace monet;
 
 int main() {
   SVGCanvas canv("output.svg", 500, 500);
-  
+
   // Create a closed path
   canv.moveto(Point(0.0, 0.0));
   canv.lineto(Point(100.0, 0.0));
@@ -43,18 +43,18 @@ int main() {
 
   // You can group graphical elements (useful if you plan to
   // open the SVG in a vector graphics program like Inkscape)
-  canv.begingroup("textandpoint");
+  canv.begingroup("textandpoint", TransformSequence{scale(0.5)});
   {
-      Point textpoint = Point(300, 250);
-      canv.setfontsize(48);
-      canv.setfontfamily(FontFamily::Monospaced);
-      canv.text(textpoint, "Hello, world!", HorizontalAlignment::Center,
-                VerticalAlignment::Bottom);
+    Point textpoint = Point(300, 250);
+    canv.setfontsize(48);
+    canv.setfontfamily(FontFamily::Monospaced);
+    canv.text(textpoint, "Hello, world!", HorizontalAlignment::Center,
+              VerticalAlignment::Bottom);
 
-      // Highlight the pivot of the text element by
-      // drawing a small circle around it
-      canv.setfillcolor(red);
-      canv.circle(textpoint, 5, Action::Fill);
+    // Highlight the pivot of the text element by
+    // drawing a small circle around it
+    canv.setfillcolor(red);
+    canv.circle(textpoint, 5, Action::Fill);
   }
   canv.endgroup();
 }
