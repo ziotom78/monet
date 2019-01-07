@@ -25,7 +25,7 @@ int main() {
 
   // You can group graphical elements (useful if you plan to
   // open the SVG in a vector graphics program like Inkscape)
-  canv.begingroup("textandpoint");
+  canv.begingroup();
   {
     Point textpoint = Point(300, 250);
     canv.setfontsize(48);

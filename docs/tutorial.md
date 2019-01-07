@@ -345,3 +345,30 @@ canvas.begingroup(TransformSequence{scale(2)});
 This will shrink every graphical command in the group twice their
 size.
 
+## Clipping
+
+Monet has the ability to “clip” graphical commands, i.e., to disable
+drawing outside some boundaries. This can be useful in complex
+drawings, e.g., plots. To perform a clipping operation, you must
+follow these steps:
+
+1. Call `BaseCanvas::defineclip()` (no arguments);
+2. Call whatever graphical operation you want, like `rectangle` and
+   `circle`, in order to identify the clipping region. Any graphical
+   operation drawing objects that fall outside the shapes drawn here
+   will be rejected.
+3. When the path is completed, call `BaseCanvas::endclip()` (no
+   arguments).
+4. You can activate and deactivate clipping by calling
+   `BaseCanvas::useclip()` and `BaseCanvas::removeclip()`.
+   
+The following example shows how to implement a clipping region made by
+a complex path:
+
+{{snippet_from_file("tut09.cpp", "c++")}}
+
+If we copy-and-paste the code from section [Fun with
+colors](./tutorial.md#fun-with-colors) after the call to
+`canvas.useclip()`, we get the following result:
+
+![tut09_image](./tut09.svg)
