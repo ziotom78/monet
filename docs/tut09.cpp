@@ -12,15 +12,10 @@ int main() {
     canvas.defineclip();
 
     std::vector<Point> points{Point(100, 30), Point(250, 110), Point(330, 135),
-                              Point(330, 30)};
+                              Point(260, 30)};
 
-    for (size_t i = 0; i < points.size(); ++i) {
-      if (i == 0)
-        canvas.moveto(points[i]);
-      else
-        canvas.lineto(points[i]);
-    }
-    canvas.fillpath();
+    canvas.drawpath(points);
+    canvas.strokepath(); // canvas.fillpath() would have been ok as well
 
     canvas.endclip();
   }

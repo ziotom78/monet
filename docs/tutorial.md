@@ -261,6 +261,38 @@ To make the stroke closed as well, just call `closepath` *before* call
 
 ![tut04 image closepath](./tut04-closepath.svg)
 
+Monet provides a handy function to quickly draw paths made by several
+points: the `drawpath` function. Instead of the following code:
+
+```c++
+std::vector<Point> points{Point(100, 50), Point(250, 140), Point(350, 175),
+                          Point(350, 50)};
+
+// Draw the path
+for (size_t i = 0; i < points.size(); ++i) {
+  if (i == 0)
+    canvas.moveto(points[i]);
+  else
+    canvas.lineto(points[i]);
+}
+```
+
+you can pass `points` to `canvas.drawpath`:
+
+```c++
+std::vector<Point> points{Point(100, 50), Point(250, 140), Point(350, 175),
+                          Point(350, 50)};
+
+// Draw the path
+canvas.drawpath(points);
+```
+
+Of course, a call to `canvas.drawpath` must be followed by a call to
+`canvas.strokepath` or `canvas.fillpath` to have an effect.
+
+
+### Curved paths
+
 Paths can be curved too. The first type of curved path is a *quadratic
 curve*, to be specified using the `quadraticto` method. In this case,
 you must provide two points: the “target” point and the “end” point:

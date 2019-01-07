@@ -116,6 +116,7 @@ Method              | Meaning
 ------------------- | ---------------------------------------------------
 `moveto(pt)` | Move to a point without drawing anything
 `lineto(pt)` | Connect the current point to a new point using a straight line
+`drawpath(seq)` | Repeatedly call `moveto` and `lineto` to draw a vector of `Point` objects
 `quadraticto(target, end)` | As `lineto`, but the line is curved (quadratic)
 `cubicto(ctrl1, ctrl2, end)` | As `lineto`, but the line is curved (cubic)
 `closepath()` | Connect the current point with the first point in the path
@@ -129,3 +130,71 @@ A presentation of the commands used to create paths is provided in the
 
 Once you have finished with a path, you *must* call `clearpath` before
 drawing a new one!
+
+
+## Groups
+
+A *group* is a collection of graphical objects. Its main purpose is to
+apply a sequence of [transformations](./ref.md#transformations) to
+each object in the collection.
+
+Method | Meaning
+------ | ---------------------------------
+`begingroup(seq, name="")` | Start a new group, applying the sequence of transformations in `seq` (an object of type `TransformSequence`)
+`endgroup()` | Complete the definition of a group started with `begingroup(...)`
+
+Any call to `begingroup` should be followed by a call to `endgroup`;
+however, the library is smart enough to close all the groups that have
+been left open when the canvas is going to be destroyed.
+
+### Transformations
+
+A transformation can be applied only to groups, and it is implemented
+via the type `Transform`, which is a [union
+type](https://en.cppreference.com/w/cpp/language/union)
+(unfortunately, C++11 lacks the support for [algebraic
+types](https://en.wikipedia.org/wiki/Algebraic_data_type), and a class
+hierarchy would have been too complex and cumbersome to use here).
+
+The following functions create a `Transform` object:
+
+Function | Meaning
+-------- | ---------------------------------
+`translate(pt)` | Translate by `pt.x` along the X direction and by `pt.y` along the Y direction
+`rotate(angle)` | Rotate by `angle` (in degrees) around point (0, 0)
+`rotate(pt, angle)` | Rotate by `angle` (in degrees) around point `pt`
+`scale(f)` | Scale by a factor `f` (`f = 1` is the identity transformation)
+`scale(pt)` | Scale by a factor `pt.x` along the X direction and by `pt.y` along the Y direction
+`scale(fx, fy)` | Scale by a factor `fx` along the X direction and by `fy` along the Y direction
+`scalex(f)` | Scale by a factor `f` along the X direction, leaving the Y direction untouched
+`scaley(f)` | Scale by a factor `f` along the Y direction, leaving the X direction untouched
+
+Transformations can be concatenated using the `|` operator. If you
+think of two transformations `tr1` and `tr2` as two functions *f* and
+*g*, the C++ expression `tr1 | tr2` is equivalent to the mathematical
+operation *g*∘*f* (function composition; note that the two operators
+are reversed). Thus, `tr1 | tr2` means: “first apply `tr1` (*f*),
+*then* apply `tr2` (*g*)”.
+
+Transformations can be passed to *begingroup*: every object within the
+call to `begingroup` and `endgroup` will be implicitly transformed by
+the sequence of transformations.
+
+Since `begingroup` expects a `TransformSequence`, you cannot pass just
+one `Transform` object to it:
+
+```c++
+// This won't work
+canvas.begingroup(rotate(30));
+```
+
+Instead, you must explicitly initialize a `TransformSequence`:
+
+```c++
+// This is ok
+canvas.begingroup(TransformSequence{rotate(30)});
+```
+
+## Clipping
+
+Check out the [tutorial](./tutorial.md#clipping).
