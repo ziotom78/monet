@@ -331,6 +331,12 @@ public:
                           const std::string &name = "") = 0;
   virtual void endgroup() = 0;
   virtual int grouplevel() const = 0;
+
+  virtual void defineclip() = 0;
+  virtual void endclip() = 0;
+
+  virtual void useclip() = 0;
+  virtual void removeclip() = 0;
 };
 
 inline void BaseCanvas::text(Point p, const std::string &str,
@@ -350,6 +356,7 @@ private:
   double width, height;
   std::string pathspec;
   int m_grouplevel;
+  bool clipping;
 
   void indent() {
     for (int i = 0; i < tabwidth * indentlevel; ++i) {
@@ -398,6 +405,12 @@ public:
 
   double getwidth() const override { return width; }
   double getheight() const override { return height; }
+
+  void defineclip() override;
+  void endclip() override;
+
+  void useclip() override;
+  void removeclip() override;
 };
 
 inline std::string SVGCanvas::fontfamilyname() const {
@@ -602,7 +615,8 @@ inline void SVGCanvas::textxy(double x, double y, const char *text,
 inline SVGCanvas::SVGCanvas(const std::string &filename, double awidth,
                             double aheight)
     : BaseCanvas(), stream(new std::ofstream(filename.c_str())), indentlevel(0),
-      width(awidth), height(aheight), pathspec(""), m_grouplevel(0) {
+      width(awidth), height(aheight), pathspec(""), m_grouplevel(0),
+      clipping(false) {
   if (stream == nullptr) {
     std::perror("Unable to create file");
     std::abort();
@@ -633,6 +647,10 @@ inline SVGCanvas::SVGCanvas(const std::string &filename, double awidth,
 inline SVGCanvas::~SVGCanvas() {
   if (stream == nullptr) {
     return;
+  }
+
+  if (clipping) {
+    removeclip();
   }
 
   // Close any group that was not closed yet
@@ -740,6 +758,54 @@ inline void SVGCanvas::endgroup() {
   *stream << "</g>\n";
 
   m_grouplevel--;
+}
+
+inline void SVGCanvas::defineclip() {
+  assert(stream != nullptr);
+  assert(!clipping);
+
+  indent();
+  *stream << "<defs>\n";
+  indentlevel++;
+
+  indent();
+  *stream << "<clipPath id=\"monet_clip_path\">\n";
+  indentlevel++;
+}
+
+inline void SVGCanvas::endclip() {
+  assert(stream != nullptr);
+  assert(!clipping);
+
+  indentlevel--;
+  indent();
+  *stream << "</clipPath>\n";
+
+  --indentlevel;
+  indent();
+  *stream << "</defs>\n";
+}
+
+inline void SVGCanvas::useclip() {
+  assert(stream != nullptr);
+  assert(!clipping);
+
+  indent();
+  *stream << "<g clip-path=\"url(#monet_clip_path)\">\n";
+  indentlevel++;
+
+  clipping = true;
+}
+
+inline void SVGCanvas::removeclip() {
+  assert(stream != nullptr);
+  assert(clipping);
+
+  indentlevel--;
+  indent();
+  *stream << "</g>\n";
+
+  clipping = false;
 }
 
 }; // namespace monet

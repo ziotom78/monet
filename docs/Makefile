@@ -16,6 +16,7 @@ EXAMPLE_FILES = \
 	tut06.svg \
 	tut07.svg \
 	tut08.svg \
+	tut09.svg \
 	ref-color.txt \
 	ref-color-table.svg \
 	ref-point.txt \
