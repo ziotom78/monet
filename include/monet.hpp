@@ -38,7 +38,7 @@
 
 namespace monet {
 
-const char *version = "0.0.7";
+const char *version = "0.0.8";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -163,6 +163,87 @@ enum class VerticalAlignment { Top, Center, Middle, Bottom };
 
 ////////////////////////////////////////////////////////////////////////////////
 
+enum class TransformType { Identity, Translation, Rotation, Scale };
+
+// All the stuff below would have been far clearer, had C++ support
+// for algebraic types like Haskell or Rust...
+
+struct Transform {
+  TransformType type;
+  union {
+    Point translation;
+    struct {
+      Point pivot;
+      double angle;
+    } rotation;
+    Point scale_factor;
+  };
+
+  Transform() : type(TransformType::Identity), translation(Point(0.0, 0.0)) {}
+};
+
+Transform translate(Point pt) {
+  Transform result;
+  result.type = TransformType::Translation;
+  result.translation = pt;
+
+  return result;
+}
+
+Transform rotate(Point pivot, double angle) {
+  Transform result;
+  result.type = TransformType::Rotation;
+  result.rotation.pivot = pivot;
+  result.rotation.angle = angle;
+
+  return result;
+}
+
+Transform rotate(double angle) {
+  Transform result;
+  result.type = TransformType::Rotation;
+  result.rotation.pivot = Point{0.0, 0.0};
+  result.rotation.angle = angle;
+
+  return result;
+}
+
+Transform scale(double factorx, double factory) {
+  Transform result;
+  result.type = TransformType::Scale;
+  result.scale_factor = Point{factorx, factory};
+
+  return result;
+}
+
+Transform scale(Point factor) { return scale(factor.x, factor.y); }
+Transform scale(double factor) { return scale(factor, factor); }
+Transform scalex(double factor) { return scale(factor, 1.0); }
+Transform scaley(double factor) { return scale(1.0, factor); }
+
+typedef std::vector<Transform> TransformSequence;
+
+const TransformSequence identity{Transform()};
+
+TransformSequence operator|(Transform tr1, Transform tr2) {
+  TransformSequence result(2);
+  result[0] = tr2;
+  result[1] = tr1;
+
+  return result;
+}
+
+TransformSequence operator|(TransformSequence seq, Transform tr) {
+  size_t input_size = seq.size();
+  TransformSequence result(input_size + 1);
+  result[0] = tr;
+  std::copy(seq.begin(), seq.end(), result.begin() + 1);
+
+  return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 class BaseCanvas {
 private:
   Color strokecolor;
@@ -173,8 +254,6 @@ private:
   double transparency;
 
 protected:
-  virtual void canvas2devxy(double inx, double iny, double *outx,
-                            double *outy) = 0;
   virtual void movetoxy(double x, double y) = 0;
   virtual void linetoxy(double x, double y) = 0;
   virtual void quadratictoxy(double xdir, double ydir, double xend,
@@ -187,12 +266,6 @@ protected:
                            Action act) = 0;
   virtual void textxy(double x, double y, const char *text,
                       HorizontalAlignment halign, VerticalAlignment valign) = 0;
-
-  Point canvas2dev(Point p) {
-    double devx, devy;
-    canvas2devxy(p.x, p.y, &devx, &devy);
-    return Point{devx, devy};
-  }
 
 public:
   BaseCanvas()
@@ -219,47 +292,26 @@ public:
   void settransparency(double tr) { transparency = tr; }
   double gettransparency() const { return transparency; }
 
-  void moveto(Point p) {
-    Point devpt = canvas2dev(p);
-    movetoxy(devpt.x, devpt.y);
-  }
+  void moveto(Point p) { movetoxy(p.x, p.y); }
 
-  void lineto(Point p) {
-    Point devpt = canvas2dev(p);
-    linetoxy(devpt.x, devpt.y);
-  }
+  void lineto(Point p) { linetoxy(p.x, p.y); }
 
   void quadraticto(Point dir, Point end) {
-    Point devdir = canvas2dev(dir);
-    Point devend = canvas2dev(end);
-    quadratictoxy(devdir.x, devdir.y, devend.x, devend.y);
+    quadratictoxy(dir.x, dir.y, end.x, end.y);
   }
 
   void cubicto(Point control1, Point control2, Point end) {
-    Point devc1 = canvas2dev(control1);
-    Point devc2 = canvas2dev(control2);
-    Point devend = canvas2dev(end);
-    cubictoxy(devc1.x, devc1.y, devc2.x, devc2.y, devend.x, devend.y);
+    cubictoxy(control1.x, control1.y, control2.x, control2.y, end.x, end.y);
   }
 
-  void line(Point p1, Point p2) {
-    Point devpt1 = canvas2dev(p1);
-    Point devpt2 = canvas2dev(p2);
-    linexy(devpt1.x, devpt1.y, devpt2.x, devpt2.y);
-  }
+  void line(Point p1, Point p2) { linexy(p1.x, p1.y, p2.x, p2.y); }
 
-  void circle(Point p, double radius, Action act = Action::Stroke) {
-    Point devpt = canvas2dev(p);
-    Point devptborder = canvas2dev(p + Point(radius, 0));
-    // Note: this assumes that the circle is still a circle when
-    // converted from canvas to device coordinates!
-    circlexy(devpt.x, devpt.y, std::fabs(devptborder.x - devpt.x), act);
+  void circle(Point pt, double radius, Action act = Action::Stroke) {
+    circlexy(pt.x, pt.y, radius, act);
   }
 
   void rectangle(Point p1, Point p2, Action act = Action::Stroke) {
-    Point devpt1 = canvas2dev(p1);
-    Point devpt2 = canvas2dev(p2);
-    rectanglexy(devpt1.x, devpt1.y, devpt2.x, devpt2.y, act);
+    rectanglexy(p1.x, p1.y, p2.x, p2.y, act);
   }
 
   void text(Point p, const std::string &str,
@@ -275,55 +327,16 @@ public:
   }
   virtual void clearpath() = 0;
 
-  virtual void begingroup(const std::string &name = "") = 0;
+  virtual void begingroup(const TransformSequence &transforms = identity,
+                          const std::string &name = "") = 0;
   virtual void endgroup() = 0;
+  virtual int grouplevel() const = 0;
 };
 
 inline void BaseCanvas::text(Point p, const std::string &str,
                              HorizontalAlignment halign,
                              VerticalAlignment valign) {
-  Point devpt = canvas2dev(p);
-  HorizontalAlignment dev_halign = halign;
-  VerticalAlignment dev_valign = valign;
-
-  // Decide where is "right" and "left"
-  Point rightpt = canvas2dev(p + Point(1.0, 0.0));
-  if (rightpt.x < devpt.x) {
-    // We must flip the horizontal alignment, as this device flips
-    // "right" and "left" in the conversion from canvas to device
-    // coordinates.
-    switch (halign) {
-    case HorizontalAlignment::Right:
-      dev_halign = HorizontalAlignment::Left;
-      break;
-    case HorizontalAlignment::Left:
-      dev_halign = HorizontalAlignment::Right;
-      break;
-    default:
-      // Useless, but it prevents a warning from the compiler
-      dev_halign = halign;
-    }
-  }
-
-  // Decide where is "up" and "down"
-  Point upperpt = canvas2dev(p + Point(0.0, 1.0));
-  if (upperpt.y < devpt.y) {
-    // We must flip the vertical alignment, as this device flips
-    // "top" and "bottom" in the conversion from canvas to device
-    // coordinates.
-    switch (valign) {
-    case VerticalAlignment::Top:
-      dev_valign = VerticalAlignment::Bottom;
-      break;
-    case VerticalAlignment::Bottom:
-      dev_valign = VerticalAlignment::Top;
-      break;
-    default:
-      // Useless, but it prevents a warning from the compiler
-      dev_valign = valign;
-    }
-  }
-  textxy(devpt.x, devpt.y, str.c_str(), dev_halign, dev_valign);
+  textxy(p.x, p.y, str.c_str(), halign, valign);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -336,7 +349,7 @@ private:
   int indentlevel;
   double width, height;
   std::string pathspec;
-  int grouplevel;
+  int m_grouplevel;
 
   void indent() {
     for (int i = 0; i < tabwidth * indentlevel; ++i) {
@@ -351,8 +364,6 @@ private:
   std::string fontfamilyname() const;
 
 protected:
-  void canvas2devxy(double inx, double iny, double *outx,
-                    double *outy) override;
   void movetoxy(double x, double y) override;
   void linetoxy(double x, double y) override;
   void quadratictoxy(double xdir, double ydir, double xend,
@@ -380,8 +391,10 @@ public:
   void fillandstrokepath() override;
   void clearpath() override { pathspec = ""; }
 
-  void begingroup(const std::string &name = "") override;
+  void begingroup(const TransformSequence &transforms = identity,
+                  const std::string &name = "") override;
   void endgroup() override;
+  int grouplevel() const override { return m_grouplevel; }
 
   double getwidth() const override { return width; }
   double getheight() const override { return height; }
@@ -398,15 +411,6 @@ inline std::string SVGCanvas::fontfamilyname() const {
   default:
     abort();
   }
-}
-
-inline void SVGCanvas::canvas2devxy(double inx, double iny, double *outx,
-                                    double *outy) {
-  assert(outx != NULL);
-  assert(outy != NULL);
-
-  *outx = inx;
-  *outy = height - iny;
 }
 
 inline void SVGCanvas::movetoxy(double x, double y) {
@@ -572,12 +576,18 @@ inline void SVGCanvas::textxy(double x, double y, const char *text,
 
   indent();
   const std::string spaces = indentstr(indentlevel + 1);
+
+  // We place the text to (0, 0) and then translate it after reversing the
+  // Y axis; otherwise, the text would be flipped vertically (remember that
+  // we are using a different coordinate system than SVG's default).
   *stream << "<text\n"
-          << spaces << "x=\"" << x << "\" y=\"" << y << "\"\n"
+          << spaces << "x=\"0\" y=\"0\"\n"
           << spaces << halign_def << "\n"
           << spaces << valign_def << "\n"
           << spaces << "font-family=\"" << fontfamilyname() << "\" font-size=\""
-          << getfontsize() << "\"\n";
+          << getfontsize() << "\"\n"
+          << spaces << "transform=\"translate(" << x << " " << y
+          << ") scale(1 -1)\"\n";
 
   if (gettransparency() > 0)
     *stream << spaces << "opacity=\"" << 1 - gettransparency() << "\"\n";
@@ -592,7 +602,7 @@ inline void SVGCanvas::textxy(double x, double y, const char *text,
 inline SVGCanvas::SVGCanvas(const std::string &filename, double awidth,
                             double aheight)
     : BaseCanvas(), stream(new std::ofstream(filename.c_str())), indentlevel(0),
-      width(awidth), height(aheight), pathspec(""), grouplevel(0) {
+      width(awidth), height(aheight), pathspec(""), m_grouplevel(0) {
   if (stream == nullptr) {
     std::perror("Unable to create file");
     std::abort();
@@ -615,7 +625,9 @@ inline SVGCanvas::SVGCanvas(const std::string &filename, double awidth,
           << "\"\n"
              "    version=\"1.1\"\n"
              "    xmlns=\"http://www.w3.org/2000/svg\">\n";
+
   indentlevel++;
+  begingroup(scaley(-1) | translate(Point(0, height)), "canvas");
 }
 
 inline SVGCanvas::~SVGCanvas() {
@@ -624,7 +636,7 @@ inline SVGCanvas::~SVGCanvas() {
   }
 
   // Close any group that was not closed yet
-  for (int i = grouplevel; i > 0; i--) {
+  for (int i = m_grouplevel; i > 0; i--) {
     endgroup();
   }
 
@@ -665,24 +677,59 @@ inline void SVGCanvas::fillandstrokepath() {
           << getstrokewidth() << "\"/>\n";
 }
 
-inline void SVGCanvas::begingroup(const std::string &name) {
+inline void SVGCanvas::begingroup(const TransformSequence &transforms,
+                                  const std::string &name) {
   assert(stream != nullptr);
 
   indent();
 
-  if (name.empty()) {
-    *stream << "<g>\n";
-  } else {
-    *stream << "<g name=\"" << name << "\">\n";
+  *stream << "<g";
+
+  if (!name.empty()) {
+    *stream << " name=\"" << name << '\"';
   }
+
+  if (transforms.size() > 1 ||
+      (transforms.size() == 1 &&
+       transforms[0].type != TransformType::Identity)) {
+    *stream << " transform=\"";
+    for (const auto &transf : transforms) {
+      switch (transf.type) {
+      case TransformType::Identity:
+        break;
+
+      case TransformType::Translation:
+        *stream << "translate(" << transf.translation.x << ' '
+                << transf.translation.y << ") ";
+        break;
+
+      case TransformType::Rotation:
+        *stream << "rotate(" << transf.rotation.angle << ' '
+                << transf.rotation.pivot.x << ' ' << transf.rotation.pivot.y
+                << ") ";
+        break;
+
+      case TransformType::Scale:
+        *stream << "scale(" << transf.scale_factor.x << ' '
+                << transf.scale_factor.y << ") ";
+        break;
+
+      default:
+        abort();
+      }
+    }
+    *stream << '\"';
+  }
+
+  *stream << ">\n";
   indentlevel++;
-  grouplevel++;
+  m_grouplevel++;
 }
 
 inline void SVGCanvas::endgroup() {
   assert(stream != nullptr);
 
-  if (grouplevel <= 0)
+  if (m_grouplevel <= 0)
     abort();
 
   if (indentlevel <= 0)
@@ -692,7 +739,7 @@ inline void SVGCanvas::endgroup() {
   indent();
   *stream << "</g>\n";
 
-  grouplevel--;
+  m_grouplevel--;
 }
 
 }; // namespace monet

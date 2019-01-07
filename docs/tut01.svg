@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Monet 0.0.6 (https://github.com/ziotom78/monet)-->
+<!-- Created with Monet 0.0.7 (https://github.com/ziotom78/monet)-->
 
 <svg
     width="500mm"
@@ -7,9 +7,11 @@
     viewBox="0 0 500 300"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg">
-  <rect
-    x="0" y="0"
-    width="500" height="300"
-    stroke="none" fill="#ffff00"/>
-  <line x1="100" y1="200" x2="400" y2="100" stroke-width="1" stroke="#000000"/>
+  <g name="canvas" transform="translate(0 300) scale(1 -1) ">
+    <rect
+      x="0" y="0"
+      width="500" height="300"
+      stroke="none" fill="#ffff00"/>
+    <line x1="100" y1="100" x2="400" y2="200" stroke-width="1" stroke="#000000"/>
+  </g>
 </svg>

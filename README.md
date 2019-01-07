@@ -2,7 +2,7 @@
 
 [![Documentation](https://readthedocs.org/projects/docs/badge/)](https://ziotom78-monet.readthedocs.io/en/latest/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Semver](http://img.shields.io/SemVer/0.0.7.png)](http://semver.org/spec/v2.0.0.html)
+[![Semver](http://img.shields.io/SemVer/0.0.8.png)](http://semver.org/spec/v2.0.0.html)
 
 Monet is a header-only C++11 graphics library with no 3rd-party
 dependencies to create vector graphics. The API is not completely
@@ -22,7 +22,7 @@ using namespace monet;
 
 int main() {
   SVGCanvas canv("output.svg", 500, 500);
-  
+
   // Create a closed path
   canv.moveto(Point(0.0, 0.0));
   canv.lineto(Point(100.0, 0.0));
@@ -43,18 +43,18 @@ int main() {
 
   // You can group graphical elements (useful if you plan to
   // open the SVG in a vector graphics program like Inkscape)
-  canv.begingroup("textandpoint");
+  canv.begingroup("textandpoint", TransformSequence{scale(0.5)});
   {
-      Point textpoint = Point(300, 250);
-      canv.setfontsize(48);
-      canv.setfontfamily(FontFamily::Monospaced);
-      canv.text(textpoint, "Hello, world!", HorizontalAlignment::Center,
-                VerticalAlignment::Bottom);
+    Point textpoint = Point(300, 250);
+    canv.setfontsize(48);
+    canv.setfontfamily(FontFamily::Monospaced);
+    canv.text(textpoint, "Hello, world!", HorizontalAlignment::Center,
+              VerticalAlignment::Bottom);
 
-      // Highlight the pivot of the text element by
-      // drawing a small circle around it
-      canv.setfillcolor(red);
-      canv.circle(textpoint, 5, Action::Fill);
+    // Highlight the pivot of the text element by
+    // drawing a small circle around it
+    canv.setfillcolor(red);
+    canv.circle(textpoint, 5, Action::Fill);
   }
   canv.endgroup();
 }

@@ -3,7 +3,7 @@
 using namespace monet;
 
 int main() {
-  SVGCanvas canv("output.svg", 500, 450);
+  SVGCanvas canv("output.svg", 500, 500);
 
   // Create a closed path
   canv.moveto(Point(0.0, 0.0));
@@ -21,15 +21,17 @@ int main() {
   // You can specify colors using HSL
   canv.setstrokecolor(hsl(0.2, 0.5, 0.4));
   canv.setstrokewidth(8.0);
-  canv.rectangle(Point(400, 100), Point(490, 150), Action::Stroke);
+  canv.rectangle(Point(400, 100), Point(500, 150), Action::Stroke);
 
   // You can group graphical elements (useful if you plan to
   // open the SVG in a vector graphics program like Inkscape)
-  canv.begingroup("textandpoint");
+  canv.begingroup("textandpoint",
+                  TransformSequence{translate(Point(300, 250))});
   {
-    Point textpoint = Point(300, 250);
+    Point textpoint = Point(0, 0);
     canv.setfontsize(48);
     canv.setfontfamily(FontFamily::Monospaced);
+    canv.setfillcolor(black);
     canv.text(textpoint, "Hello, world!", HorizontalAlignment::Center,
               VerticalAlignment::Bottom);
 

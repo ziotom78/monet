@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Monet 0.0.7 (https://github.com/ziotom78/monet)-->
+
+<svg
+    width="500mm"
+    height="150mm"
+    viewBox="0 0 500 150"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg">
+  <g name="canvas" transform="translate(0 150) scale(1 -1) ">
+    <g transform="translate(250 75) rotate(0 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#cc0000">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(30 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#cc6600">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(60 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#cccc00">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(90 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#66cc00">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(120 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#00cc00">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(150 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#00cc66">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(180 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#00cccc">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(210 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#0066cc">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(240 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#0000cc">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(270 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#6600cc">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(300 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#cc00cc">
+Hello, world!
+      </text>
+    </g>
+    <g transform="translate(250 75) rotate(330 0 0) ">
+      <text
+        x="0" y="0"
+        text-anchor="start"
+        dominant-baseline="text-top"
+        font-family="sans-serif" font-size="12"
+        transform="translate(0 0) scale(1 -1)"
+        fill="#cc0066">
+Hello, world!
+      </text>
+    </g>
+    <circle cx="250" cy="75" r="5" fill="#000000" stroke="none"/>
+  </g>
+</svg>

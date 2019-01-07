@@ -288,3 +288,60 @@ opaque red color to a 80% transparent violet hue. Note that the border
 of the rectangles has *no* transparency.
 
 ![tut07 image](./tut07.svg)
+
+## Transformations
+
+Besides basic graphical commands like circles and rectangles, Monet
+implements a transformation pipeline that allows to apply a number of
+operations to graphical commands. Currently, the following operations
+are supported:
+
+- Rotations (`BasicCanvas::rotate`)
+- Translation (`BasicCanvas::translate`)
+- Scale transformations (`BasicCanvas::scale`, `BasicCanvas::scalex`,
+  `BasicCanvas::scaley`)
+
+You can apply a sequence of transformations to *groups*, which are
+sequences of graphical commands enclosed within a call to
+`BasicCanvas::begingroup` and `BasicCanvas::endgroup`.
+
+The following example shows how to apply rotations to some text:
+
+{{snippet_from_file("tut08.cpp", "c++")}}
+
+![tut08_image](./tut08.svg)
+
+The example builds 12 groups, each containing a text object with
+content `Hello, world!`. In the call to `begingroup` (which must
+always be matched by a call to `endgroup`), we specify a composite
+transformation using the operator `|`: the operation `rotate(angle) |
+translate(pivot)` means that for each graphical element drawn within
+the calls to `canvas.begingroup` and `canvas.endgroup` (in our case,
+the call to `canvas.text`) must be *first* rotated by an angle `angle`
+(in degrees), and *then* translated by `pivot.x` along the x axis and
+`pivot.y` along the y axis.
+
+Transformations are instances of the `monet::Transform` type, but you
+should never instantiate it directly; instead, use one of the
+following functions:
+
+- `rotate(angle, pivot)`
+- `rotate(angle)` (assume that `pivot = Point(0, 0)`)
+- `translate(point)`
+- `scale(factor)`, `scalex(factor)`, `scaley(factor`, `scale(factor_x,
+  factor_y)`
+
+The operator `|` applies the sequence of transformations in sequence
+and automatically builds a `TransformSequence` type (ordered list of
+transformations). As `begingroup` expects a `TransformSequence`
+instead of a `Transform`, if you want to apply *one* operation instead
+of a sequence, you should initialize a `TransformSequence` object
+using the following syntax:
+
+```c++
+canvas.begingroup(TransformSequence{scale(2)});
+```
+
+This will shrink every graphical command in the group twice their
+size.
+
