@@ -296,6 +296,15 @@ public:
 
   void lineto(Point p) { linetoxy(p.x, p.y); }
 
+  void drawpath(const std::vector<Point> pts) {
+    for (size_t i = 0; i < pts.size(); ++i) {
+      if (i == 0)
+        moveto(pts[i]);
+      else
+        lineto(pts[i]);
+    }
+  }
+
   void quadraticto(Point dir, Point end) {
     quadratictoxy(dir.x, dir.y, end.x, end.y);
   }
