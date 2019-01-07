@@ -1,2 +1,4 @@
 build
 *~
+examples/demo
+__pycache__
