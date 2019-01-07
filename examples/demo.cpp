@@ -25,8 +25,7 @@ int main() {
 
   // You can group graphical elements (useful if you plan to
   // open the SVG in a vector graphics program like Inkscape)
-  canv.begingroup("textandpoint",
-                  TransformSequence{translate(Point(300, 250))});
+  canv.begingroup(TransformSequence{translate(Point(300, 250))});
   {
     Point textpoint = Point(0, 0);
     canv.setfontsize(48);

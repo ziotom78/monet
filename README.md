@@ -43,11 +43,12 @@ int main() {
 
   // You can group graphical elements (useful if you plan to
   // open the SVG in a vector graphics program like Inkscape)
-  canv.begingroup("textandpoint", TransformSequence{scale(0.5)});
+  canv.begingroup(TransformSequence{translate(Point(300, 250))});
   {
-    Point textpoint = Point(300, 250);
+    Point textpoint = Point(0, 0);
     canv.setfontsize(48);
     canv.setfontfamily(FontFamily::Monospaced);
+    canv.setfillcolor(black);
     canv.text(textpoint, "Hello, world!", HorizontalAlignment::Center,
               VerticalAlignment::Bottom);
 
