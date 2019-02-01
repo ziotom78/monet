@@ -17,10 +17,8 @@ int main() {
       canvas.lineto(points[i]);
   }
 
-  // @@@START_CODE_SNIPPET@@@
-  canvas.closepath();
-  canvas.setfillcolor(gray(0.7));
-  canvas.fillandstrokepath();
+// @@@START_CODE_SNIPPET@@@
+#include "tut04-closepath.inc.cpp"
   // @@@END_CODE_SNIPPET@@@
 
   int pointidx = 1;
