@@ -1,6 +1,5 @@
 # Monet − A vector graphics library for C++11
 
-[![Documentation](https://readthedocs.org/projects/docs/badge/)](https://ziotom78-monet.readthedocs.io/en/latest/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Semver](http://img.shields.io/SemVer/0.0.10.png)](http://semver.org/spec/v2.0.0.html)
 
@@ -12,6 +11,8 @@ version 1.0.0.
 The library is licensed using the MIT license. See the file
 [LICENSE.md](https://github.com/ziotom78/monet/blob/master/LICENSE.md)
 for further information.
+
+Documentation is available at https://ziotom78.github.io/monet/
 
 ## Example
 
