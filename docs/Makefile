@@ -24,10 +24,13 @@ EXAMPLE_FILES = \
 
 .phony: all clean
 
-all: $(EXAMPLE_FILES)
+all: index.html $(EXAMPLE_FILES)
 
 clean:
-	rm -f $(EXAMPLE_FILES)
+	rm -f index.html $(EXAMPLE_FILES)
+
+index.html: index.adoc tutorial.adoc ref.adoc
+	asciidoctor index.adoc
 
 %.svg: %.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< && ./a.out && rm -f ./a.out

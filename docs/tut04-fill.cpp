@@ -17,9 +17,8 @@ int main() {
       canvas.lineto(points[i]);
   }
 
-  // @@@START_CODE_SNIPPET@@@
-  canvas.setfillcolor(gray(0.7));
-  canvas.fillpath();
+// @@@START_CODE_SNIPPET@@@
+#include "tut04-fill.inc.cpp"
   // @@@END_CODE_SNIPPET@@@
 
   int pointidx = 1;

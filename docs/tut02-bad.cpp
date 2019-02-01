@@ -23,7 +23,7 @@ int main() {
     char text[64];
     sprintf(text, "(%d, %d)", static_cast<int>(pt.x), static_cast<int>(pt.y));
     // @@@START_CODE_SNIPPET@@@
-    canvas.text(pt, text, HorizontalAlignment::Center, VerticalAlignment::Top);
+#include "tut02-bad.inc.cpp"
     // @@@END_CODE_SNIPPET@@@
   }
 }

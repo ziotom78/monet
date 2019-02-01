@@ -16,8 +16,7 @@ int main() {
   const double square_height = height / 3;
 
   // @@@START_CODE_SNIPPET@@@
-  // Use a fixed saturation for all the squares
-  const double saturation = 0.0;
+#include "tut03-no-saturation.inc.cpp"
   // @@@END_CODE_SNIPPET@@@
   const std::vector<double> lightness_levels{0.33, 0.50, 0.67};
   for (size_t row_num = 0; row_num < lightness_levels.size(); ++row_num) {
