@@ -8,11 +8,26 @@ set(ZIOTOM78_MONET_TARGET_NAME ${PROJECT_NAME})
 set(ZIOTOM78_MONET_INCLUDE_BUILD_DIR "${PROJECT_SOURCE_DIR}/include/")
 
 add_library(${ZIOTOM78_MONET_TARGET_NAME} INTERFACE)
+
+set(MONET_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/include")
+
 target_sources(${ZIOTOM78_MONET_TARGET_NAME}
-  INTERFACE "${PROJECT_SOURCE_DIR}/include/monet.h")
+  INTERFACE "${MONET_INCLUDE_PATH}/monet.h")
 target_include_directories(${ZIOTOM78_MONET_TARGET_NAME}
   INTERFACE ${ZIOTOM78_MONET_INCLUDE_BUILD_DIR})
 target_compile_features(${ZIOTOM78_MONET_TARGET_NAME} INTERFACE cxx_std_11)
+
+add_executable(simple examples/simple.cpp)
+target_include_directories(simple
+  PUBLIC ${MONET_INCLUDE_PATH})
+
+add_executable(complex examples/complex.cpp)
+target_include_directories(complex
+  PUBLIC ${MONET_INCLUDE_PATH})
+
+add_executable(spirograph examples/spirograph.cpp)
+target_include_directories(spirograph
+  PUBLIC ${MONET_INCLUDE_PATH})
 
 include(CTest)
 
