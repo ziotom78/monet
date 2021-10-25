@@ -1,6 +1,6 @@
-const double width = 500;
-const double height = 150;
-SVGCanvas canvas("tut09.svg", width, height);
+const double width{500};
+const double height{150};
+SVGCanvas canvas{"tut09.svg", width, height};
 
 {
   canvas.defineclip();

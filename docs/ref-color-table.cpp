@@ -35,15 +35,15 @@ const std::vector<ColorDescription> colors{
 };
 
 int main() {
-  const double barheight = 16;
-  SVGCanvas canvas("ref-color-table.svg", 300, barheight * colors.size());
+  const double barheight{16};
+  SVGCanvas canvas{"ref-color-table.svg", 300, barheight * colors.size()};
 
   canvas.setfontsize(8);
   canvas.setfontfamily(FontFamily::Monospaced);
 
-  for (size_t i = 0; i < colors.size(); ++i) {
-    Point pt1(0, barheight * i);
-    Point pt2(canvas.getwidth(), barheight * (i + 1));
+  for (size_t i{}; i < colors.size(); ++i) {
+    Point pt1{0, barheight * i};
+    Point pt2{canvas.getwidth(), barheight * (i + 1)};
 
     canvas.setfillcolor(colors[i].col);
     canvas.setstrokecolor(black);

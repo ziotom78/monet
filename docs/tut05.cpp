@@ -5,7 +5,7 @@
 using namespace monet;
 
 int main() {
-  SVGCanvas canvas("tut05.svg", 400, 100);
+  SVGCanvas canvas{"tut05.svg", 400, 100};
 
   std::vector<Point> points{Point(10, 10), Point(200, 70), Point(300, 10)};
 
