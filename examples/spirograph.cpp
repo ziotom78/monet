@@ -29,7 +29,7 @@ int main() {
   const double large_r{188};
   const double a{75};
   const double tmax{1000};
-  const double delta_t{0.1};
+  const double delta_t{0.2};
 
   Point old_point{center + spirograph(small_r, large_r, a, 0)};
   for (double t{delta_t}; t < tmax; t += delta_t) {
