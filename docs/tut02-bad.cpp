@@ -5,10 +5,10 @@
 using namespace monet;
 
 int main() {
-  SVGCanvas canvas("tut02-bad.svg", 500, 500);
+  SVGCanvas canvas{"tut02-bad.svg", 500, 500};
   std::vector<Point> points{
-      Point(100, 100), Point(400, 100), Point(100, 400),
-      Point(400, 400), Point(250, 250),
+      Point{100, 100}, Point{400, 100}, Point{100, 400},
+      Point{400, 400}, Point{250, 250},
   };
 
   // Draw a border
