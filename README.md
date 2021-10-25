@@ -2,17 +2,34 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Semver](http://img.shields.io/SemVer/1.0.0.png)](http://semver.org/spec/v1.0.0.html)
+[![hosted-pure-workflow](https://github.com/ziotom78/monet/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/ziotom78/monet/actions/workflows/c-cpp.yml)
 
-Monet is a header-only C++11 graphics library with no 3rd-party
-dependencies to create vector graphics. Download file
+Monet is a header-only C++11 graphics library with no 3rd-party dependencies to create vector graphics. Download the file [include/monet.h](https://raw.githubusercontent.com/ziotom78/monet/master/include/monet.h) and put it alongside you source files to use it—no need to change your `Makefile`!
 
-The library is licensed using the MIT license. See the file
-[LICENSE.md](https://github.com/ziotom78/monet/blob/master/LICENSE.md)
-for further information.
+The library is licensed using the MIT license. See the file [LICENSE.md](https://github.com/ziotom78/monet/blob/master/LICENSE.md) for further information.
 
 Documentation is available at https://ziotom78.github.io/monet/
 
-## Example
+## Simple example
+
+```c++
+#include <monet.h>
+
+using namespace monet;
+
+int main() {
+  SVGCanvas canv("output.svg", 100, 100);
+
+  // Create a closed path
+  canv.moveto(Point(0.0, 0.0));
+  canv.lineto(Point(100.0, 0.0));
+  canv.lineto(Point(100.0, 100.0));
+  canv.closepath();
+  canv.strokepath();
+}
+```
+
+## A more complex example
 
 ```c++
 #include <monet.h>
