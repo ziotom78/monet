@@ -20,9 +20,8 @@ functions (remember, they are not constructors):
 stating the color space;
 * `hsl(h, s, l)` initializes the color using the hue, saturation, and
 luminosity values. In this case too, all the parameters must be in the
-range [0, 1] (yes, even the hue). The
-link:./tutorial.md#fun-with-colors[tutorial] has a nice explanation of
-the meaning of each parameter.
+range [0, 1] (yes, even the hue). See <<_fun_with_colors>> for an
+explanation of the meaning of each parameter.
 * `gray(l)` initializes the color with a gray shade. It is equivalent to
 `hue(0, 0, l)`.
 
@@ -162,8 +161,8 @@ set with `setfillcolor`
 |`clearpath()` |Cancel the current path and start a new ones
 |=======================================================================
 
-A presentation of the commands used to create paths is provided in the
-link:./tutorial.md#paths[tutorial].
+A presentation of the commands used to create paths is provided in
+Section <<_paths>>.
 
 Once you have finished with a path, you _must_ call `clearpath` before
 drawing a new one!
@@ -171,8 +170,8 @@ drawing a new one!
 === Groups ===
 
 A _group_ is a collection of graphical objects. Its main purpose is to
-apply a sequence of link:./ref.md#transformations[transformations] to
-each object in the collection.
+apply a sequence of transformations (see <<_transformations>>) to each
+object in the collection.
 
 [width="100%",cols="16%,84%",options="header",]
 |=======================================================================
@@ -257,4 +256,4 @@ canvas.begingroup(TransformSequence{rotate(30)});
 
 === Clipping ===
 
-Check out the link:./tutorial.md#clipping[tutorial].
+Check out section <<_clipping>> in the tutorial.

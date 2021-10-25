@@ -59,8 +59,7 @@ https://inkscape.org/[Inkscape], Adobe Illustrator, and Corel Draw!.
 
 The second line sets the _fill color_ for any filling operation that
 will follow. We are using one of the predefined colors in Monet,
-`yellow` (see the link:./ref.md#standard-colors[reference] for more
-color names):
+`yellow` (see <<_standard_colors>> for more color names):
 
 [source,c++]
 ----
@@ -142,7 +141,7 @@ The call to `canvas.text` passes `pt + Point(0, canvas.getfontsize())`
 as the coordinate where to put the text. `Point` is a structure that can
 be used with a few mathematical operators. In our example, we used the
 addition (`operator+`) in order to shift the text a bit above the
-circle. See the link:./ref.md#point[reference] for more information.
+circle. See the <<_reference>> for more information.
 
 The amount of vertical shift is given by the result of a call to
 `canvas.getfontsize()`, which returns the height of a character of text.
@@ -447,8 +446,7 @@ complex path:
 include::tut09.inc.cpp[]
 ----
 
-If we copy-and-paste the code from section
-link:./tutorial.md#fun-with-colors[Fun with colors] after the call to
-`canvas.useclip()`, we get the following result:
+If we copy-and-paste the code from Section <<_fun_with_colors>> after
+the call to `canvas.useclip()`, we get the following result:
 
 image:./tut09.svg[tut09_image]

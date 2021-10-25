@@ -584,8 +584,8 @@ disk.</p>
 formats, like EPS and PDF, are planned.</p>
 </div>
 <div class="paragraph">
-<p>You can proceed with the <a href="./tutorial.md">tutorial</a>, or you can
-directly download the library and start coding:</p>
+<p>You can proceed with the <a href="#_tutorial">Tutorial</a>, or you can directly download
+the library and start coding:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -680,8 +680,7 @@ Firefox, Chrome, Safari) and edited using vector graphics programs like
 <div class="paragraph">
 <p>The second line sets the <em>fill color</em> for any filling operation that
 will follow. We are using one of the predefined colors in Monet,
-<code>yellow</code> (see the <a href="./ref.md#standard-colors">reference</a> for more
-color names):</p>
+<code>yellow</code> (see <a href="#_standard_colors">Standard colors</a> for more color names):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -767,8 +766,8 @@ to show the coordinates of a few points in a canvas.</p>
 <span class="predefined-type">int</span> main() {
   SVGCanvas canvas{<span class="string"><span class="delimiter">&quot;</span><span class="content">tut02.svg</span><span class="delimiter">&quot;</span></span>, <span class="integer">500</span>, <span class="integer">500</span>};
   std::vector&lt;Point&gt; points{
-      Point(<span class="integer">100</span>, <span class="integer">100</span>), Point(<span class="integer">400</span>, <span class="integer">100</span>), Point(<span class="integer">100</span>, <span class="integer">400</span>),
-      Point(<span class="integer">400</span>, <span class="integer">400</span>), Point(<span class="integer">250</span>, <span class="integer">250</span>),
+      Point{<span class="integer">100</span>, <span class="integer">100</span>}, Point{<span class="integer">400</span>, <span class="integer">100</span>}, Point{<span class="integer">100</span>, <span class="integer">400</span>},
+      Point{<span class="integer">400</span>, <span class="integer">400</span>}, Point{<span class="integer">250</span>, <span class="integer">250</span>},
   };
 
   <span class="comment">// Draw a border</span>
@@ -821,7 +820,7 @@ use any construct we want to place graphical elements on the canvas.</p>
 as the coordinate where to put the text. <code>Point</code> is a structure that can
 be used with a few mathematical operators. In our example, we used the
 addition (<code>operator+</code>) in order to shift the text a bit above the
-circle. See the <a href="./ref.md#point">reference</a> for more information.</p>
+circle. See the <a href="#_reference">Reference</a> for more information.</p>
 </div>
 <div class="paragraph">
 <p>The amount of vertical shift is given by the result of a call to
@@ -1427,9 +1426,8 @@ canvas.useclip();
 </div>
 </div>
 <div class="paragraph">
-<p>If we copy-and-paste the code from section
-<a href="./tutorial.md#fun-with-colors">Fun with colors</a> after the call to
-<code>canvas.useclip()</code>, we get the following result:</p>
+<p>If we copy-and-paste the code from Section <a href="#_fun_with_colors">Fun with colors</a> after
+the call to <code>canvas.useclip()</code>, we get the following result:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="./tut09.svg" alt="tut09_image"></span></p>
@@ -1490,9 +1488,8 @@ stating the color space;</p>
 <li>
 <p><code>hsl(h, s, l)</code> initializes the color using the hue, saturation, and
 luminosity values. In this case too, all the parameters must be in the
-range [0, 1] (yes, even the hue). The
-<a href="./tutorial.md#fun-with-colors">tutorial</a> has a nice explanation of
-the meaning of each parameter.</p>
+range [0, 1] (yes, even the hue). See <a href="#_fun_with_colors">Fun with colors</a> for an
+explanation of the meaning of each parameter.</p>
 </li>
 <li>
 <p><code>gray(l)</code> initializes the color with a gray shade. It is equivalent to
@@ -1820,8 +1817,8 @@ set with <code>setfillcolor</code></p></td>
 </tbody>
 </table>
 <div class="paragraph">
-<p>A presentation of the commands used to create paths is provided in the
-<a href="./tutorial.md#paths">tutorial</a>.</p>
+<p>A presentation of the commands used to create paths is provided in
+Section <a href="#_paths">Paths</a>.</p>
 </div>
 <div class="paragraph">
 <p>Once you have finished with a path, you <em>must</em> call <code>clearpath</code> before
@@ -1832,8 +1829,8 @@ drawing a new one!</p>
 <h3 id="_groups">Groups</h3>
 <div class="paragraph">
 <p>A <em>group</em> is a collection of graphical objects. Its main purpose is to
-apply a sequence of <a href="./ref.md#transformations">transformations</a> to
-each object in the collection.</p>
+apply a sequence of transformations (see <a href="#_transformations">Transformations</a>) to each
+object in the collection.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1967,7 +1964,7 @@ canvas.begingroup(TransformSequence{rotate(<span class="integer">30</span>)});</
 <div class="sect2">
 <h3 id="_clipping_2">Clipping</h3>
 <div class="paragraph">
-<p>Check out the <a href="./tutorial.md#clipping">tutorial</a>.</p>
+<p>Check out section <a href="#_clipping">Clipping</a> in the tutorial.</p>
 </div>
 </div>
 </div>
@@ -1975,7 +1972,7 @@ canvas.begingroup(TransformSequence{rotate(<span class="integer">30</span>)});</
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-25 12:17:17 +0200
+Last updated 2021-10-25 13:21:47 +0200
 </div>
 </div>
 <script type="text/x-mathjax-config">
