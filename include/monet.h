@@ -42,6 +42,26 @@ const char *version = "0.1.0";
 
 ////////////////////////////////////////////////////////////////////////////////
 
+/** \brief A 2D point
+ *
+ * This structure represents a 2D point in the image plane. It is
+ * extensively used in Monet to specify where to draw things. The
+ * coordinates are in the form (x, y) and are expressed as `double`
+ * numbers, where the point (0, 0) is on the bottom left corner of the
+ * image. (The orientation of the X and Y axes is the same as in the
+ * Cartesian plane.)
+ *
+ * The members `x` and `y` can be freely accessed, and you can use the
+ * usual mathematical operations on this type:
+ *
+ * \code{cpp}
+ * Point a{1.0, 3.0};
+ * Point b{5.0, 1.0};
+ * Point c{a + b};    // Addition
+ * a *= 2.0;          // Scale
+ * \endcode
+ */
+
 struct Point {
   double x, y;
 
@@ -81,6 +101,23 @@ inline std::ostream &operator<<(std::ostream &out, Point p) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+/** A color, represented as a RGB tuple.
+ *
+ * In Monet, every time you want to pass a color (e.g., to specify how
+ * to draw a line or fill a rectangle), you must pass an instance of
+ * the `Color` class. Colors are encoded using three floating-point
+ * numbers in the range [0, 1].
+ *
+ * As colors are very common in the library, there are a few inline
+ * functions that can create colors on-the-fly from other color spaces:
+ *
+ * \code{cpp}
+ * Color a{0.5, 0.3, 0.4};       // RGB color
+ * Color b{rgb(0.5, 0.3, 0.4)};  // Alternative notation
+ * Color c{hsl(0.9, 0.1, 0.6)};  // Hue-Saturation-Luminosity space
+ * Color d{gray(0.5)};           // Gray shade (50%)
+ * \endcode
+ */
 struct Color {
   double r, g, b;
 
@@ -149,8 +186,6 @@ const Color lightpurple{1.0, 0.5, 1.0};
 const Color lightcyan{0.5, 1.0, 1.0};
 const Color white{1.0, 1.0, 1.0};
 
-const std::vector<Color> plotcolors{Color{1.0, 1.0, 1.0}};
-
 ////////////////////////////////////////////////////////////////////////////////
 
 enum class Action { Stroke, Fill, FillAndStroke };
@@ -182,7 +217,15 @@ struct Transform {
   Transform() : type(TransformType::Identity), translation(Point(0.0, 0.0)) {}
 };
 
-Transform translate(Point pt) {
+/** Translation along the X/Y axis
+ *
+ * This function returns a Transform object that translates by some
+ * X,Y amount, specified by `pt`.
+ *
+ * @param pt The amount of shift along the X and Y axis, encoded as a point
+ * @return A Transformation object
+ */
+inline Transform translate(Point pt) {
   Transform result;
   result.type = TransformType::Translation;
   result.translation = pt;
@@ -190,7 +233,17 @@ Transform translate(Point pt) {
   return result;
 }
 
-Transform rotate(Point pivot, double angle) {
+/** Rotation around a point
+ *
+ * This function returns a Transform object that rotates around
+ * `pivot` by an angle `angle` expressed in degrees.
+ *
+ * @param pivot The center of the rotation (i.e., the point that does
+ * not rotate)
+ * @param angle The angle measured in degrees
+ * @return A Transformation object
+ */
+inline Transform rotate(Point pivot, double angle) {
   Transform result;
   result.type = TransformType::Rotation;
   result.rotation.pivot = pivot;
@@ -199,7 +252,15 @@ Transform rotate(Point pivot, double angle) {
   return result;
 }
 
-Transform rotate(double angle) {
+/** Rotation around the origin (0, 0)
+ *
+ * This function returns a Transform object that rotates around
+ * the origin (0, 0) by an angle `angle` expressed in degrees.
+ *
+ * @param angle The angle measured in degrees
+ * @return A Transformation object
+ */
+inline Transform rotate(double angle) {
   Transform result;
   result.type = TransformType::Rotation;
   result.rotation.pivot = Point{0.0, 0.0};
@@ -208,7 +269,17 @@ Transform rotate(double angle) {
   return result;
 }
 
-Transform scale(double factorx, double factory) {
+/** Scale transformation
+ *
+ * This function returns a Transform object that scales, i.e.,
+ * enlarges or shrinks, according to the positive numbers `factorx`
+ * and `factory`.
+ *
+ * @param factorx The scale factor along the X axis
+ * @param factory The scale factor along the Y axis
+ * @return A Transformation object
+ */
+inline Transform scale(double factorx, double factory) {
   Transform result;
   result.type = TransformType::Scale;
   result.scale_factor = Point{factorx, factory};
@@ -216,16 +287,55 @@ Transform scale(double factorx, double factory) {
   return result;
 }
 
-Transform scale(Point factor) { return scale(factor.x, factor.y); }
-Transform scale(double factor) { return scale(factor, factor); }
-Transform scalex(double factor) { return scale(factor, 1.0); }
-Transform scaley(double factor) { return scale(1.0, factor); }
+/** Scale transformation
+ *
+ * This function returns a Transform object that scales the X and Y
+ * axes according to the positive number `factor`. If `factor > 1`,
+ * the scale transform enlarges the image, otherwise it shrinks it.
+ * Passing `factor = 1` returns the identity transformation.
+ *
+ * @param factor The scale factor along the X/Y axis
+ * @return A Transformation object
+ */
+inline Transform scale(Point factor) { return scale(factor.x, factor.y); }
+
+/** Scale transformation
+ *
+ * This function returns a Transform object that scales the X and Y
+ * axes according to the positive number `factor`. If `factor > 1`,
+ * the scale transform enlarges the image, otherwise it shrinks it.
+ * Passing `factor = 1` returns the identity transformation.
+ *
+ * @param factor The scale factor along the X/Y axis
+ * @return A Transformation object
+ */
+inline Transform scale(double factor) { return scale(factor, factor); }
+
+/** Scale transformation
+ *
+ * This function returns a Transform object that scales the X
+ * axis according to the positive number `factor`, leaving the Y axis untouched.
+ *
+ * @param factor The scale factor along the X axis
+ * @return A Transformation object
+ */
+inline Transform scalex(double factor) { return scale(factor, 1.0); }
+
+/** Scale transformation
+ *
+ * This function returns a Transform object that scales the Y
+ * axis according to the positive number `factor`, leaving the X axis untouched.
+ *
+ * @param factor The scale factor along the Y axis
+ * @return A Transformation object
+ */
+inline Transform scaley(double factor) { return scale(1.0, factor); }
 
 typedef std::vector<Transform> TransformSequence;
 
 const TransformSequence identity{Transform()};
 
-TransformSequence operator|(Transform tr1, Transform tr2) {
+inline TransformSequence operator|(Transform tr1, Transform tr2) {
   TransformSequence result(2);
   result[0] = tr2;
   result[1] = tr1;
@@ -233,7 +343,7 @@ TransformSequence operator|(Transform tr1, Transform tr2) {
   return result;
 }
 
-TransformSequence operator|(TransformSequence seq, Transform tr) {
+inline TransformSequence operator|(TransformSequence seq, Transform tr) {
   size_t input_size{seq.size()};
   TransformSequence result(input_size + 1);
   result[0] = tr;
@@ -292,10 +402,14 @@ public:
   void settransparency(double tr) { transparency = tr; }
   double gettransparency() const { return transparency; }
 
+  /// Move the current point on the image plane
   void moveto(Point p) { movetoxy(p.x, p.y); }
 
+  /// Append to the current path a line from the current point to `p` on the
+  /// image plane
   void lineto(Point p) { linetoxy(p.x, p.y); }
 
+  /// Draw a line that joins a vector of 2D points on the image plane
   void drawpath(const std::vector<Point> pts) {
     for (size_t i{}; i < pts.size(); ++i) {
       if (i == 0)
@@ -305,24 +419,29 @@ public:
     }
   }
 
+  /// Append a quadratic curved line to the current path
   void quadraticto(Point dir, Point end) {
     quadratictoxy(dir.x, dir.y, end.x, end.y);
   }
 
+  /// Append a cubic curved line to the current path
   void cubicto(Point control1, Point control2, Point end) {
     cubictoxy(control1.x, control1.y, control2.x, control2.y, end.x, end.y);
   }
 
   void line(Point p1, Point p2) { linexy(p1.x, p1.y, p2.x, p2.y); }
 
+  /// Draw a circle
   void circle(Point pt, double radius, Action act = Action::Stroke) {
     circlexy(pt.x, pt.y, radius, act);
   }
 
+  /// Paint a rectangle
   void rectangle(Point p1, Point p2, Action act = Action::Stroke) {
     rectanglexy(p1.x, p1.y, p2.x, p2.y, act);
   }
 
+  /// Draw a line of text
   void text(Point p, const std::string &str,
             HorizontalAlignment halign = HorizontalAlignment::Right,
             VerticalAlignment valign = VerticalAlignment::Top);
@@ -356,9 +475,31 @@ inline void BaseCanvas::text(Point p, const std::string &str,
 
 ////////////////////////////////////////////////////////////////////////////////
 
+/** A SVG canvas
+ *
+ * This object represents a write-only SVG file where painting
+ * operations can be issued and saved.
+ *
+ * \code{cpp}
+ * #include "monet.h"
+ *
+ * using namespace monet;
+ *
+ * int main() {
+ *   SVGCanvas canv{"simple.svg", 100, 100};
+ *
+ *   // Create a closed path
+ *   canv.moveto(Point(0.0, 0.0));
+ *   canv.lineto(Point(100.0, 0.0));
+ *   canv.lineto(Point(100.0, 100.0));
+ *   canv.closepath();
+ *   canv.strokepath();
+ * }
+ * \endcode
+ */
 class SVGCanvas : public BaseCanvas {
 private:
-  const int tabwidth = 2;
+  const int tabwidth{2};
 
   std::unique_ptr<std::ostream> stream;
   int indentlevel;
@@ -395,30 +536,58 @@ protected:
               VerticalAlignment valign) override;
 
 public:
+  /// Create a new SVG file with the specified width and height (in points)
   SVGCanvas(const std::string &filename, double awidth, double aheight);
   void operator=(const SVGCanvas &canvas) = delete;
   virtual ~SVGCanvas();
 
+  /// Returns true if the SVG file was created successfully
   bool isok() const { return stream->good(); }
 
+  /// Terminate a path that was started by a call to Transform::moveto or
+  /// Transform::lineto
   void closepath() override { pathspec += " z"; }
+
+  /// Draw the profile of the current path
   void strokepath() override;
+
+  /// Fill the interior of the current path
   void fillpath() override;
+
+  /// Draw the profile of the current path and fill its interior
   void fillandstrokepath() override;
+
+  /// Remove the path that has been drawn so far from memory
   void clearpath() override { pathspec = ""; }
 
+  /// Start a new group of paint operations, possibly associated with a
+  /// transformation
   void begingroup(const TransformSequence &transforms = identity,
                   const std::string &name = "") override;
+
+  /// Close the group that was started by the last call to Transform::begingroup
   void endgroup() override;
+
+  /// Return the group nest level, i.e., the number of unclosed calls to
+  /// Transform::begingroup
   int grouplevel() const override { return m_grouplevel; }
 
+  /// Return the width of the SVG picture (in points)
   double getwidth() const override { return width; }
+
+  /// Return the height of the SVG picture (in points)
   double getheight() const override { return height; }
 
+  /// Start recording painting commands and use them to clip
   void defineclip() override;
+
+  /// Terminate recording painting commands for clipping
   void endclip() override;
 
+  /// Apply the clipping
   void useclip() override;
+
+  /// Stop clipping
   void removeclip() override;
 };
 
