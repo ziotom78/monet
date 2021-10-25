@@ -5,7 +5,7 @@
 using namespace monet;
 
 int main() {
-  SVGCanvas canvas("tut06.svg", 400, 100);
+  SVGCanvas canvas{"tut06.svg", 400, 100};
 
 // @@@START_CODE_SNIPPET@@@
 #include "tut06.inc.cpp"

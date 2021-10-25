@@ -103,9 +103,9 @@ inline Color rgb(double r, double g, double b) { return Color{r, g, b}; }
 // All the three values h, s, and l must be in the range [0, 1]
 inline Color hsl(double h, double s, double l) {
   h = std::fmod(h, 1.0);
-  double chroma = (1 - std::fabs(2 * l - 1)) * s;
-  double sh = 6 * h;
-  double x = chroma * (1 - std::fabs(std::fmod(sh, 2) - 1));
+  double chroma{(1 - std::fabs(2 * l - 1)) * s};
+  double sh{6 * h};
+  double x{chroma * (1 - std::fabs(std::fmod(sh, 2) - 1))};
 
   Color scaled;
   if (sh <= 1)
@@ -121,7 +121,7 @@ inline Color hsl(double h, double s, double l) {
   else
     scaled = Color{chroma, 0, x};
 
-  double m = l - chroma / 2;
+  double m{l - chroma / 2};
   return Color{scaled.r + m, scaled.g + m, scaled.b + m};
 }
 
@@ -234,7 +234,7 @@ TransformSequence operator|(Transform tr1, Transform tr2) {
 }
 
 TransformSequence operator|(TransformSequence seq, Transform tr) {
-  size_t input_size = seq.size();
+  size_t input_size{seq.size()};
   TransformSequence result(input_size + 1);
   result[0] = tr;
   std::copy(seq.begin(), seq.end(), result.begin() + 1);
@@ -269,8 +269,8 @@ protected:
 
 public:
   BaseCanvas()
-      : strokecolor(black), fillcolor(white), strokewidth(1.0),
-        fontfamily(FontFamily::SansSerif), fontsize(12.0), transparency(0.0) {}
+      : strokecolor{black}, fillcolor{white}, strokewidth{1.0},
+        fontfamily{FontFamily::SansSerif}, fontsize{12.0}, transparency{0.0} {}
   void setstrokecolor(Color col) { strokecolor = col; }
   void setfillcolor(Color col) { fillcolor = col; }
 
@@ -297,7 +297,7 @@ public:
   void lineto(Point p) { linetoxy(p.x, p.y); }
 
   void drawpath(const std::vector<Point> pts) {
-    for (size_t i = 0; i < pts.size(); ++i) {
+    for (size_t i{}; i < pts.size(); ++i) {
       if (i == 0)
         moveto(pts[i]);
       else
@@ -368,7 +368,7 @@ private:
   bool clipping;
 
   void indent() {
-    for (int i = 0; i < tabwidth * indentlevel; ++i) {
+    for (int i{}; i < tabwidth * indentlevel; ++i) {
       *stream << ' ';
     }
   }
@@ -439,7 +439,7 @@ inline void SVGCanvas::movetoxy(double x, double y) {
   if (!pathspec.empty())
     pathspec += ' ';
 
-  std::stringstream buf;
+  std::stringstream buf{};
   buf << "M " << x << ',' << y;
   pathspec += buf.str();
 }
@@ -448,7 +448,7 @@ inline void SVGCanvas::linetoxy(double x, double y) {
   if (!pathspec.empty())
     pathspec += ' ';
 
-  std::stringstream buf;
+  std::stringstream buf{};
   buf << x << ',' << y;
   pathspec += buf.str();
 }
@@ -458,7 +458,7 @@ inline void SVGCanvas::quadratictoxy(double xdir, double ydir, double xend,
   if (!pathspec.empty())
     pathspec += ' ';
 
-  std::stringstream buf;
+  std::stringstream buf{};
   buf << "Q " << xdir << ',' << ydir << ' ' << xend << ',' << yend;
   pathspec += buf.str();
 }
@@ -468,14 +468,14 @@ inline void SVGCanvas::cubictoxy(double xc1, double yc1, double xc2, double yc2,
   if (!pathspec.empty())
     pathspec += ' ';
 
-  std::stringstream buf;
+  std::stringstream buf{};
   buf << "C " << xc1 << ',' << yc1 << ' ' << xc2 << ',' << yc2 << ' ' << xend
       << ',' << yend;
   pathspec += buf.str();
 }
 
 inline void SVGCanvas::linexy(double x1, double y1, double x2, double y2) {
-  assert(stream != nullptr);
+  assert(stream);
   indent();
 
   *stream << "<line x1=\"" << x1 << "\" y1=\"" << y1 << "\" x2=\"" << x2
@@ -489,12 +489,12 @@ inline void SVGCanvas::linexy(double x1, double y1, double x2, double y2) {
 }
 
 inline void SVGCanvas::circlexy(double x, double y, double radius, Action act) {
-  assert(stream != nullptr);
+  assert(stream);
 
   indent();
   *stream << "<circle cx=\"" << x << "\" cy=\"" << y << "\" r=\"" << radius;
 
-  std::stringstream buf;
+  std::stringstream buf{};
   switch (act) {
   case Action::Stroke:
     buf << "\" stroke=\"" << getstrokecolor().toHTML() << "\" stroke-width=\""
@@ -522,8 +522,8 @@ inline void SVGCanvas::circlexy(double x, double y, double radius, Action act) {
 
 inline void SVGCanvas::rectanglexy(double x1, double y1, double x2, double y2,
                                    Action act) {
-  assert(stream != nullptr);
-  std::string spaces = indentstr(indentlevel + 1);
+  assert(stream);
+  std::string spaces{indentstr(indentlevel + 1)};
 
   indent();
   *stream << "<rect\n"
@@ -533,7 +533,7 @@ inline void SVGCanvas::rectanglexy(double x1, double y1, double x2, double y2,
           << std::fabs(y2 - y1) << "\"\n"
           << spaces;
 
-  std::stringstream buf;
+  std::stringstream buf{};
   switch (act) {
   case Action::Stroke:
     buf << "stroke=\"" << getstrokecolor().toHTML() << "\" stroke-width=\""
@@ -623,10 +623,10 @@ inline void SVGCanvas::textxy(double x, double y, const char *text,
 
 inline SVGCanvas::SVGCanvas(const std::string &filename, double awidth,
                             double aheight)
-    : BaseCanvas(), stream(new std::ofstream(filename.c_str())), indentlevel(0),
-      width(awidth), height(aheight), pathspec(""), m_grouplevel(0),
-      clipping(false) {
-  if (stream == nullptr) {
+    : BaseCanvas{}, stream{new std::ofstream(filename.c_str())},
+      indentlevel{0}, width{awidth}, height{aheight}, pathspec{""},
+      m_grouplevel{0}, clipping{false} {
+  if (!stream) {
     std::perror("Unable to create file");
     std::abort();
   }
@@ -654,7 +654,7 @@ inline SVGCanvas::SVGCanvas(const std::string &filename, double awidth,
 }
 
 inline SVGCanvas::~SVGCanvas() {
-  if (stream == nullptr) {
+  if (!stream) {
     return;
   }
 
@@ -663,7 +663,7 @@ inline SVGCanvas::~SVGCanvas() {
   }
 
   // Close any group that was not closed yet
-  for (int i = m_grouplevel; i > 0; i--) {
+  for (int i{m_grouplevel}; i > 0; i--) {
     endgroup();
   }
 
@@ -671,8 +671,8 @@ inline SVGCanvas::~SVGCanvas() {
 }
 
 inline void SVGCanvas::strokepath() {
-  assert(stream != nullptr);
-  std::string spaces = indentstr(indentlevel + 1);
+  assert(stream);
+  std::string spaces{indentstr(indentlevel + 1)};
 
   indent();
   *stream << "<path\n"
@@ -682,8 +682,8 @@ inline void SVGCanvas::strokepath() {
 }
 
 inline void SVGCanvas::fillpath() {
-  assert(stream != nullptr);
-  std::string spaces = indentstr(indentlevel + 1);
+  assert(stream);
+  std::string spaces{indentstr(indentlevel + 1)};
 
   indent();
   *stream << "<path\n"
@@ -693,8 +693,8 @@ inline void SVGCanvas::fillpath() {
 }
 
 inline void SVGCanvas::fillandstrokepath() {
-  assert(stream != nullptr);
-  std::string spaces = indentstr(indentlevel + 1);
+  assert(stream);
+  std::string spaces{indentstr(indentlevel + 1)};
 
   indent();
   *stream << "<path\n"
@@ -706,7 +706,7 @@ inline void SVGCanvas::fillandstrokepath() {
 
 inline void SVGCanvas::begingroup(const TransformSequence &transforms,
                                   const std::string &name) {
-  assert(stream != nullptr);
+  assert(stream);
 
   indent();
 
@@ -754,7 +754,7 @@ inline void SVGCanvas::begingroup(const TransformSequence &transforms,
 }
 
 inline void SVGCanvas::endgroup() {
-  assert(stream != nullptr);
+  assert(stream);
 
   if (m_grouplevel <= 0)
     abort();
@@ -770,7 +770,7 @@ inline void SVGCanvas::endgroup() {
 }
 
 inline void SVGCanvas::defineclip() {
-  assert(stream != nullptr);
+  assert(stream);
   assert(!clipping);
 
   indent();
@@ -783,7 +783,7 @@ inline void SVGCanvas::defineclip() {
 }
 
 inline void SVGCanvas::endclip() {
-  assert(stream != nullptr);
+  assert(stream);
   assert(!clipping);
 
   indentlevel--;
@@ -796,7 +796,7 @@ inline void SVGCanvas::endclip() {
 }
 
 inline void SVGCanvas::useclip() {
-  assert(stream != nullptr);
+  assert(stream);
   assert(!clipping);
 
   indent();
@@ -807,7 +807,7 @@ inline void SVGCanvas::useclip() {
 }
 
 inline void SVGCanvas::removeclip() {
-  assert(stream != nullptr);
+  assert(stream);
   assert(clipping);
 
   indentlevel--;
