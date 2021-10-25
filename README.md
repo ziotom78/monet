@@ -13,12 +13,12 @@ Documentation is available at https://ziotom78.github.io/monet/
 ## Simple example
 
 ```c++
-#include <monet.h>
+#include "monet.h"
 
 using namespace monet;
 
 int main() {
-  SVGCanvas canv("output.svg", 100, 100);
+  SVGCanvas canv{"simple.svg", 100, 100};
 
   // Create a closed path
   canv.moveto(Point(0.0, 0.0));
@@ -29,15 +29,24 @@ int main() {
 }
 ```
 
+Save the program in a file `simple.cpp`, download the file [include/monet.h](https://raw.githubusercontent.com/ziotom78/monet/master/include/monet.h) and put it in the same folder as `simple.cpp`, and compile with the following command:
+
+    c++ -o simple simple.cpp
+    
+When the program is ran, it will create the image file `simple.svg`:
+
+<img src="simple.svg" width="300px" height="300px"/>
+
+
 ## A more complex example
 
 ```c++
-#include <monet.h>
+#include "monet.h"
 
 using namespace monet;
 
 int main() {
-  SVGCanvas canv("output.svg", 500, 500);
+  SVGCanvas canv{"complex.svg", 500, 500};
 
   // Create a closed path
   canv.moveto(Point(0.0, 0.0));
@@ -61,7 +70,7 @@ int main() {
   // open the SVG in a vector graphics program like Inkscape)
   canv.begingroup(TransformSequence{translate(Point(300, 250))});
   {
-    Point textpoint = Point(0, 0);
+    Point textpoint{Point(0, 0)};
     canv.setfontsize(48);
     canv.setfontfamily(FontFamily::Monospaced);
     canv.setfillcolor(black);
@@ -79,7 +88,7 @@ int main() {
 
 The program produces the following output:
 
-<img src="sample.svg" width="300px" height="300px"/>
+<img src="complex.svg" width="300px" height="300px"/>
 
 ## Documentation
 
