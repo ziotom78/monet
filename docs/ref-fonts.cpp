@@ -4,7 +4,7 @@
 using namespace monet;
 
 int main() {
-  SVGCanvas canvas("ref-fonts.svg", 500, 90);
+  SVGCanvas canvas{"ref-fonts.svg", 500, 90};
 
   canvas.setfillcolor(black);
 

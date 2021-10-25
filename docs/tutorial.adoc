@@ -49,7 +49,7 @@ surface that accepts graphical commands:
 
 [source,c++]
 ----
-SVGCanvas canvas("tut01.svg", 500, 300);
+SVGCanvas canvas{"tut01.svg", 500, 300};
 ----
 
 The constructor we are using, `SVGCanvas` saves the plotting commands in
@@ -109,7 +109,7 @@ to the constructor. This is what we did in `tut01`:
 
 [source,c++]
 ----
-SVGCanvas canvas("tut01.svg", 500, 500);
+SVGCanvas canvas{"tut01.svg", 500, 500};
 ----
 
 This instruction tells Monet that the image will be 500×500 wide, i.e.,
@@ -171,10 +171,10 @@ Here is an example:
 
 [source,c++]
 ----
-Color color1 = black;
-Color color2 = rgb(0.5, 1.0, 0.5);
-Color color3 = gray(0.7);
-Color color4 = hsl(0.3, 0.5, 0.75);
+Color color1{black};
+Color color2{rgb(0.5, 1.0, 0.5)};
+Color color3{gray(0.7)};
+Color color4{hsl(0.3, 0.5, 0.75)};
 ----
 
 RGB and HSL use three floating-point numbers in the range [0, 1] to
