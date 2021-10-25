@@ -1,5 +1,5 @@
-std::vector<Point> points{Point(10, 10), Point(10, 70), Point(250, 50),
-                          Point(300, 10)};
+std::vector<Point> points{Point{10, 10}, Point{10, 70}, Point{250, 50},
+                          Point{300, 10}};
 
 // Cubic curve, shown using a thick black line
 canvas.setstrokewidth(3);

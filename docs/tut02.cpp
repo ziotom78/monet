@@ -13,7 +13,7 @@ int main() {
 
   // Draw a border
   canvas.setstrokecolor(black);
-  canvas.rectangle(Point(0, 0), Point(500, 500), Action::Stroke);
+  canvas.rectangle(Point{0, 0}, Point{500, 500}, Action::Stroke);
 
   // Draw a point and some text for every element in "points"
   canvas.setfillcolor(black);
@@ -22,7 +22,7 @@ int main() {
 
     char text[64];
     sprintf(text, "(%d, %d)", static_cast<int>(pt.x), static_cast<int>(pt.y));
-    canvas.text(pt + Point(0, canvas.getfontsize()), text,
+    canvas.text(pt + Point{0, canvas.getfontsize()}, text,
                 HorizontalAlignment::Center, VerticalAlignment::Top);
   }
 }

@@ -44,7 +44,7 @@ int main() {
 
       // Print the lightness level on the right side of the plot
       std::sprintf(text, "L: %.0f%%", lightness * 100);
-      canvas.text(Point(width - rightside / 2, textcenter.y), text,
+      canvas.text(Point{width - rightside / 2, textcenter.y}, text,
                   HorizontalAlignment::Center, VerticalAlignment::Center);
     }
   }

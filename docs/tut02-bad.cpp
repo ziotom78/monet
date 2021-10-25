@@ -13,7 +13,7 @@ int main() {
 
   // Draw a border
   canvas.setstrokecolor(black);
-  canvas.rectangle(Point(0, 0), Point(500, 500), Action::Stroke);
+  canvas.rectangle(Point{0, 0}, Point{500, 500}, Action::Stroke);
 
   // Draw a point and some text for every element in "points"
   canvas.setfillcolor(black);

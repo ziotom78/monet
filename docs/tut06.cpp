@@ -32,10 +32,10 @@ int main() {
 
   // Finally, add some text
   canvas.setfontsize(10);
-  canvas.text(points[1] + Point(0, 10), "Control point #1",
+  canvas.text(points[1] + Point{0, 10}, "Control point #1",
               HorizontalAlignment::Right);
-  canvas.text(points[2] + Point(0, 10), "Control point #2",
+  canvas.text(points[2] + Point{0, 10}, "Control point #2",
               HorizontalAlignment::Center);
-  canvas.text(points[3] + Point(10, 0), "End point", HorizontalAlignment::Right,
+  canvas.text(points[3] + Point{10, 0}, "End point", HorizontalAlignment::Right,
               VerticalAlignment::Center);
 }

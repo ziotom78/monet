@@ -8,7 +8,7 @@ for (double angle{}; angle < 360; angle += 30) {
   canvas.setfillcolor(hsl(angle / 360, 1.0, 0.4));
 
   // Note that the position of the text is (0, 0)
-  canvas.text(Point(0, 0), "Hello, world!");
+  canvas.text(Point{}, "Hello, world!");
   canvas.endgroup();
 }
 

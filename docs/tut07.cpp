@@ -16,7 +16,7 @@ int main() {
     canvas.setfillcolor(black);
     canvas.rectangle(pt1, pt2, Action::Stroke);
 
-    pt1 += Point(50, 20);
-    pt2 += Point(50, 20);
+    pt1 += Point{50, 20};
+    pt2 += Point{50, 20};
   }
 }

@@ -31,7 +31,7 @@ int main() {
     char buf[8];
     std::sprintf(buf, "#%d", pointidx++);
     canvas.setfillcolor(black);
-    canvas.text(point + Point(canvas.getfontsize(), 0), buf,
+    canvas.text(point + Point{canvas.getfontsize(), 0}, buf,
                 HorizontalAlignment::Right, VerticalAlignment::Center);
   }
 }

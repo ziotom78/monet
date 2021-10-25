@@ -7,7 +7,7 @@ using namespace monet;
 int main() {
   SVGCanvas canvas{"tut05.svg", 400, 100};
 
-  std::vector<Point> points{Point(10, 10), Point(200, 70), Point(300, 10)};
+  std::vector<Point> points{Point{10, 10}, Point{200, 70}, Point{300, 10}};
 
   // Quartic curve, shown using a thick black line
   canvas.setstrokewidth(3);
@@ -37,8 +37,8 @@ int main() {
 
   // Finally, add some text
   canvas.setfontsize(10);
-  canvas.text(points[1] + Point(0, 10), "Target point",
+  canvas.text(points[1] + Point{0, 10}, "Target point",
               HorizontalAlignment::Center);
-  canvas.text(points[2] + Point(10, 0), "End point", HorizontalAlignment::Right,
+  canvas.text(points[2] + Point{10, 0}, "End point", HorizontalAlignment::Right,
               VerticalAlignment::Center);
 }

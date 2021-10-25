@@ -4,8 +4,8 @@
 using namespace monet;
 
 int main() {
-  TransformSequence seq =
-      rotate(Point(1.0, 2.0), 3.0) | translate(Point(4.0, 5.0));
+  TransformSequence seq{rotate(Point{1.0, 2.0}, 3.0) |
+                        translate(Point{4.0, 5.0})};
 
   assert(seq.size() == 2);
 

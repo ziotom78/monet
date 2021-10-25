@@ -7,8 +7,8 @@ using namespace monet;
 int main() {
   SVGCanvas canvas{"tut04.svg", 500, 200};
 
-  std::vector<Point> points{Point(100, 50), Point(250, 140), Point(350, 175),
-                            Point(350, 50)};
+  std::vector<Point> points{Point{100, 50}, Point{250, 140}, Point{350, 175},
+                            Point{350, 50}};
 
   // Draw the path
   for (size_t i{}; i < points.size(); ++i) {
@@ -29,7 +29,7 @@ int main() {
     char buf[8];
     std::sprintf(buf, "#%d", pointidx++);
     canvas.setfillcolor(black);
-    canvas.text(point + Point(canvas.getfontsize(), 0), buf,
+    canvas.text(point + Point{canvas.getfontsize(), 0}, buf,
                 HorizontalAlignment::Right, VerticalAlignment::Center);
   }
 }

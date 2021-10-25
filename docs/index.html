@@ -627,10 +627,10 @@ favourite editor to create the following C++ file, and name it
   SVGCanvas canvas{<span class="string"><span class="delimiter">&quot;</span><span class="content">tut01.svg</span><span class="delimiter">&quot;</span></span>, <span class="integer">500</span>, <span class="integer">300</span>};
 
   canvas.setfillcolor(yellow);
-  canvas.rectangle(Point(<span class="integer">0</span>, <span class="integer">0</span>), Point(<span class="integer">500</span>, <span class="integer">300</span>), Action::Fill);
+  canvas.rectangle(Point{<span class="integer">0</span>, <span class="integer">0</span>}, Point{<span class="integer">500</span>, <span class="integer">300</span>}, Action::Fill);
 
   canvas.setstrokecolor(black);
-  canvas.line(Point(<span class="integer">100</span>, <span class="integer">100</span>), Point(<span class="integer">400</span>, <span class="integer">200</span>));
+  canvas.line(Point{<span class="integer">100</span>, <span class="integer">100</span>}, Point{<span class="integer">400</span>, <span class="integer">200</span>});
 }</code></pre>
 </div>
 </div>
@@ -772,7 +772,7 @@ to show the coordinates of a few points in a canvas.</p>
 
   <span class="comment">// Draw a border</span>
   canvas.setstrokecolor(black);
-  canvas.rectangle(Point(<span class="integer">0</span>, <span class="integer">0</span>), Point(<span class="integer">500</span>, <span class="integer">500</span>), Action::Stroke);
+  canvas.rectangle(Point{<span class="integer">0</span>, <span class="integer">0</span>}, Point{<span class="integer">500</span>, <span class="integer">500</span>}, Action::Stroke);
 
   <span class="comment">// Draw a point and some text for every element in &quot;points&quot;</span>
   canvas.setfillcolor(black);
@@ -781,7 +781,7 @@ to show the coordinates of a few points in a canvas.</p>
 
     <span class="predefined-type">char</span> text[<span class="integer">64</span>];
     sprintf(text, <span class="string"><span class="delimiter">&quot;</span><span class="content">(%d, %d)</span><span class="delimiter">&quot;</span></span>, <span class="keyword">static_cast</span>&lt;<span class="predefined-type">int</span>&gt;(pt.x), <span class="keyword">static_cast</span>&lt;<span class="predefined-type">int</span>&gt;(pt.y));
-    canvas.text(pt + Point(<span class="integer">0</span>, canvas.getfontsize()), text,
+    canvas.text(pt + Point{<span class="integer">0</span>, canvas.getfontsize()}, text,
                 HorizontalAlignment::Center, VerticalAlignment::Top);
   }
 }</code></pre>
@@ -964,7 +964,7 @@ the saturation:</p>
 
       <span class="comment">// Print the lightness level on the right side of the plot</span>
       std::sprintf(text, <span class="string"><span class="delimiter">&quot;</span><span class="content">L: %.0f%%</span><span class="delimiter">&quot;</span></span>, lightness * <span class="integer">100</span>);
-      canvas.text(Point(width - rightside / <span class="integer">2</span>, textcenter.y), text,
+      canvas.text(Point{width - rightside / <span class="integer">2</span>, textcenter.y}, text,
                   HorizontalAlignment::Center, VerticalAlignment::Center);
     }
   }
@@ -1028,8 +1028,8 @@ example:</p>
 <span class="predefined-type">int</span> main() {
   SVGCanvas canvas{<span class="string"><span class="delimiter">&quot;</span><span class="content">tut04.svg</span><span class="delimiter">&quot;</span></span>, <span class="integer">500</span>, <span class="integer">200</span>};
 
-  std::vector&lt;Point&gt; points{Point(<span class="integer">100</span>, <span class="integer">50</span>), Point(<span class="integer">250</span>, <span class="integer">140</span>), Point(<span class="integer">350</span>, <span class="integer">175</span>),
-                            Point(<span class="integer">350</span>, <span class="integer">50</span>)};
+  std::vector&lt;Point&gt; points{Point{<span class="integer">100</span>, <span class="integer">50</span>}, Point{<span class="integer">250</span>, <span class="integer">140</span>}, Point{<span class="integer">350</span>, <span class="integer">175</span>},
+                            Point{<span class="integer">350</span>, <span class="integer">50</span>}};
 
   <span class="comment">// Draw the path</span>
   <span class="keyword">for</span> (size_t i{}; i &lt; points.size(); ++i) {
@@ -1050,7 +1050,7 @@ example:</p>
     <span class="predefined-type">char</span> buf[<span class="integer">8</span>];
     std::sprintf(buf, <span class="string"><span class="delimiter">&quot;</span><span class="content">#%d</span><span class="delimiter">&quot;</span></span>, pointidx++);
     canvas.setfillcolor(black);
-    canvas.text(point + Point(canvas.getfontsize(), <span class="integer">0</span>), buf,
+    canvas.text(point + Point{canvas.getfontsize(), <span class="integer">0</span>}, buf,
                 HorizontalAlignment::Right, VerticalAlignment::Center);
   }
 }</code></pre>
@@ -1161,7 +1161,7 @@ you must provide two points: the <code>target'' point and the </code>end'' point
 <span class="predefined-type">int</span> main() {
   SVGCanvas canvas{<span class="string"><span class="delimiter">&quot;</span><span class="content">tut05.svg</span><span class="delimiter">&quot;</span></span>, <span class="integer">400</span>, <span class="integer">100</span>};
 
-  std::vector&lt;Point&gt; points{Point(<span class="integer">10</span>, <span class="integer">10</span>), Point(<span class="integer">200</span>, <span class="integer">70</span>), Point(<span class="integer">300</span>, <span class="integer">10</span>)};
+  std::vector&lt;Point&gt; points{Point{<span class="integer">10</span>, <span class="integer">10</span>}, Point{<span class="integer">200</span>, <span class="integer">70</span>}, Point{<span class="integer">300</span>, <span class="integer">10</span>}};
 
   <span class="comment">// Quartic curve, shown using a thick black line</span>
   canvas.setstrokewidth(<span class="integer">3</span>);
@@ -1191,9 +1191,9 @@ you must provide two points: the <code>target'' point and the </code>end'' point
 
   <span class="comment">// Finally, add some text</span>
   canvas.setfontsize(<span class="integer">10</span>);
-  canvas.text(points[<span class="integer">1</span>] + Point(<span class="integer">0</span>, <span class="integer">10</span>), <span class="string"><span class="delimiter">&quot;</span><span class="content">Target point</span><span class="delimiter">&quot;</span></span>,
+  canvas.text(points[<span class="integer">1</span>] + Point{<span class="integer">0</span>, <span class="integer">10</span>}, <span class="string"><span class="delimiter">&quot;</span><span class="content">Target point</span><span class="delimiter">&quot;</span></span>,
               HorizontalAlignment::Center);
-  canvas.text(points[<span class="integer">2</span>] + Point(<span class="integer">10</span>, <span class="integer">0</span>), <span class="string"><span class="delimiter">&quot;</span><span class="content">End point</span><span class="delimiter">&quot;</span></span>, HorizontalAlignment::Right,
+  canvas.text(points[<span class="integer">2</span>] + Point{<span class="integer">10</span>, <span class="integer">0</span>}, <span class="string"><span class="delimiter">&quot;</span><span class="content">End point</span><span class="delimiter">&quot;</span></span>, HorizontalAlignment::Right,
               VerticalAlignment::Center);
 }</code></pre>
 </div>
@@ -1207,8 +1207,8 @@ you must provide two points: the <code>target'' point and the </code>end'' point
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="c++">std::vector&lt;Point&gt; points{Point(<span class="integer">10</span>, <span class="integer">10</span>), Point(<span class="integer">10</span>, <span class="integer">70</span>), Point(<span class="integer">250</span>, <span class="integer">50</span>),
-                          Point(<span class="integer">300</span>, <span class="integer">10</span>)};
+<pre class="CodeRay highlight"><code data-lang="c++">std::vector&lt;Point&gt; points{Point{<span class="integer">10</span>, <span class="integer">10</span>}, Point{<span class="integer">10</span>, <span class="integer">70</span>}, Point{<span class="integer">250</span>, <span class="integer">50</span>},
+                          Point{<span class="integer">300</span>, <span class="integer">10</span>}};
 
 <span class="comment">// Cubic curve, shown using a thick black line</span>
 canvas.setstrokewidth(<span class="integer">3</span>);
@@ -1250,8 +1250,8 @@ the <code>settransparency</code> function.</p>
     canvas.setfillcolor(black);
     canvas.rectangle(pt1, pt2, Action::Stroke);
 
-    pt1 += Point(<span class="integer">50</span>, <span class="integer">20</span>);
-    pt2 += Point(<span class="integer">50</span>, <span class="integer">20</span>);
+    pt1 += Point{<span class="integer">50</span>, <span class="integer">20</span>};
+    pt2 += Point{<span class="integer">50</span>, <span class="integer">20</span>};
   }
 }</code></pre>
 </div>
@@ -1307,7 +1307,7 @@ Point pivot{<span class="integer">250</span>, <span class="integer">75</span>};
   canvas.setfillcolor(hsl(angle / <span class="integer">360</span>, <span class="float">1</span><span class="float">.0</span>, <span class="float">0</span><span class="float">.4</span>));
 
   <span class="comment">// Note that the position of the text is (0, 0)</span>
-  canvas.text(Point(<span class="integer">0</span>, <span class="integer">0</span>), <span class="string"><span class="delimiter">&quot;</span><span class="content">Hello, world!</span><span class="delimiter">&quot;</span></span>);
+  canvas.text(Point{}, <span class="string"><span class="delimiter">&quot;</span><span class="content">Hello, world!</span><span class="delimiter">&quot;</span></span>);
   canvas.endgroup();
 }
 
@@ -1411,8 +1411,8 @@ SVGCanvas canvas{<span class="string"><span class="delimiter">&quot;</span><span
 {
   canvas.defineclip();
 
-  std::vector&lt;Point&gt; points{Point(<span class="integer">100</span>, <span class="integer">30</span>), Point(<span class="integer">250</span>, <span class="integer">110</span>), Point(<span class="integer">330</span>, <span class="integer">135</span>),
-                            Point(<span class="integer">260</span>, <span class="integer">30</span>)};
+  std::vector&lt;Point&gt; points{Point{<span class="integer">100</span>, <span class="integer">30</span>}, Point{<span class="integer">250</span>, <span class="integer">110</span>}, Point{<span class="integer">330</span>, <span class="integer">135</span>},
+                            Point{<span class="integer">260</span>, <span class="integer">30</span>}};
 
   canvas.drawpath(points);
   canvas.strokepath(); <span class="comment">// canvas.fillpath() would have been ok as well</span>
