@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
+set (CMAKE_CXX_STANDARD 11)
+
 project(ziotom78_monet VERSION 0.1.0 LANGUAGES CXX)
 
 option(MONET_UseCairo "Use the Cairo library" ON)
@@ -15,7 +17,6 @@ target_sources(${ZIOTOM78_MONET_TARGET_NAME}
   INTERFACE "${MONET_INCLUDE_PATH}/monet.h")
 target_include_directories(${ZIOTOM78_MONET_TARGET_NAME}
   INTERFACE ${ZIOTOM78_MONET_INCLUDE_BUILD_DIR})
-target_compile_features(${ZIOTOM78_MONET_TARGET_NAME} INTERFACE cxx_std_11)
 
 add_executable(simple examples/simple.cpp)
 target_include_directories(simple
