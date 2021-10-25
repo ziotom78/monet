@@ -2,7 +2,7 @@
 
 -   Update `include/monet.h`
 -   Update `CMakeLists.txt`
--   Re-run `./rebuild-examples.sh` so that SVG files include the correct version number in comments
+-   Re-run `make -C docs -B` so that SVG files include the correct version number in comments
 -   Run the following commands:
 
     ```

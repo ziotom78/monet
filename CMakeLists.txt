@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(ziotom78_monet VERSION 0.0.1 LANGUAGES CXX)
+project(ziotom78_monet VERSION 0.1.0 LANGUAGES CXX)
 
 option(MONET_UseCairo "Use the Cairo library" ON)
 
