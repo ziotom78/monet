@@ -1,12 +1,10 @@
 # Monet − A vector graphics library for C++11
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Semver](http://img.shields.io/SemVer/0.0.10.png)](http://semver.org/spec/v2.0.0.html)
+[![Semver](http://img.shields.io/SemVer/1.0.0.png)](http://semver.org/spec/v1.0.0.html)
 
 Monet is a header-only C++11 graphics library with no 3rd-party
-dependencies to create vector graphics. The API is not completely
-stable yet, but it should not change too much before the release of
-version 1.0.0.
+dependencies to create vector graphics. Download file
 
 The library is licensed using the MIT license. See the file
 [LICENSE.md](https://github.com/ziotom78/monet/blob/master/LICENSE.md)
@@ -17,7 +15,7 @@ Documentation is available at https://ziotom78.github.io/monet/
 ## Example
 
 ```c++
-#include <monet.hpp>
+#include <monet.h>
 
 using namespace monet;
 

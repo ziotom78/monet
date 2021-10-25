@@ -9,7 +9,7 @@ Create an empty directory somewhere with name `tut01`, and install the
 Monet header file in it with the following command:
 
 ....
-curl https://raw.githubusercontent.com/ziotom78/monet/master/include/monet.hpp > monet.hpp
+curl https://raw.githubusercontent.com/ziotom78/monet/master/include/monet.h > monet.h
 ....
 
 (Of course, you can use `wget` or any other downloader.) Now use your
